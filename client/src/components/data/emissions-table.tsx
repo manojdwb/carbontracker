@@ -13,7 +13,7 @@ import type { EmissionEntry } from "@shared/schema";
 
 export default function EmissionsTable() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [dateFilter, setDateFilter] = useState("");
+  const [dateFilter, setDateFilter] = useState("all-time");
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -57,7 +57,7 @@ export default function EmissionsTable() {
     
     if (!matchesSearch) return false;
     
-    if (dateFilter === "") return true;
+    if (dateFilter === "all-time") return true;
     
     const { startDate, endDate } = getDateRange(dateFilter);
     return entry.date >= startDate && entry.date <= endDate;
@@ -107,7 +107,7 @@ export default function EmissionsTable() {
                 <SelectValue placeholder="All Time" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Time</SelectItem>
+                <SelectItem value="all-time">All Time</SelectItem>
                 <SelectItem value="last-7-days">Last 7 Days</SelectItem>
                 <SelectItem value="last-30-days">Last 30 Days</SelectItem>
                 <SelectItem value="last-90-days">Last 90 Days</SelectItem>
