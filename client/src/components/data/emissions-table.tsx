@@ -135,6 +135,7 @@ export default function EmissionsTable() {
                     <TableHead>Date</TableHead>
                     <TableHead>Quantity</TableHead>
                     <TableHead>Emission Factor</TableHead>
+                    <TableHead>Cost (INR)</TableHead>
                     <TableHead>CO2 Emissions</TableHead>
                     <TableHead>Actions</TableHead>
                   </TableRow>
@@ -155,6 +156,9 @@ export default function EmissionsTable() {
                       <TableCell className="text-muted-foreground">{entry.date}</TableCell>
                       <TableCell>{entry.quantity} units</TableCell>
                       <TableCell className="text-muted-foreground">{entry.emissionFactor} kgCO2/unit</TableCell>
+                      <TableCell className="text-muted-foreground">
+                        {entry.costInr ? `₹${Number(entry.costInr).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '-'}
+                      </TableCell>
                       <TableCell className="font-semibold">{formatCO2(Number(entry.co2Emissions))}</TableCell>
                       <TableCell>
                         <div className="flex items-center space-x-2">

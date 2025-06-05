@@ -28,6 +28,7 @@ export default function DataEntryForm() {
       calorificValue: 0,
       emissionFactor: 0,
       density: 0,
+      costInr: 0,
       notes: "",
     },
   });
@@ -218,6 +219,25 @@ export default function DataEntryForm() {
                 )}
               />
             </div>
+
+            <FormField
+              control={form.control}
+              name="costInr"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Cost (INR)</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      step="0.01"
+                      placeholder="Enter cost in Indian Rupees"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <FormField
               control={form.control}
