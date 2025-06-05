@@ -84,7 +84,12 @@ export default function Data() {
                         <TableCell>
                           <div className="space-y-2">
                             <div className="text-sm text-muted-foreground">{project.status}</div>
-                            <Progress value={project.progress} className="w-32" />
+                            <div className="w-32 bg-gray-200 rounded-full h-2">
+                              <div 
+                                className="bg-blue-600 h-2 rounded-full" 
+                                style={{ width: `${project.progress}%` }}
+                              ></div>
+                            </div>
                           </div>
                         </TableCell>
                         <TableCell>{project.owner}</TableCell>

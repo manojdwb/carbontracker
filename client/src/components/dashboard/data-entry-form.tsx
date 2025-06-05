@@ -275,6 +275,7 @@ export default function DataEntryForm() {
                       placeholder="Add any additional notes or context..."
                       className="resize-none"
                       {...field}
+                      value={field.value || ""}
                     />
                   </FormControl>
                   <FormMessage />
