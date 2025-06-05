@@ -115,11 +115,11 @@ export default function DataEntryForm() {
                 name="scope"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Emission Scope</FormLabel>
+                    <FormLabel>Emission Category</FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select scope" />
+                          <SelectValue placeholder="Select category" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -287,10 +287,20 @@ export default function DataEntryForm() {
                 <i className="fas fa-calculator mr-1"></i>
                 Calculated CO2: <span className="font-semibold">{formatCO2(calculatedCO2)}</span>
               </div>
-              <Button type="submit" disabled={mutation.isPending}>
-                <i className="fas fa-save mr-2"></i>
-                {mutation.isPending ? "Saving..." : "Save Entry"}
-              </Button>
+              <div className="flex items-center space-x-3">
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  className="bg-yellow-50 border-yellow-200 text-yellow-800 hover:bg-yellow-100"
+                >
+                  <i className="fas fa-clock mr-2"></i>
+                  Approval Pending
+                </Button>
+                <Button type="submit" disabled={mutation.isPending}>
+                  <i className="fas fa-save mr-2"></i>
+                  {mutation.isPending ? "Saving..." : "Save Entry"}
+                </Button>
+              </div>
             </div>
           </form>
         </Form>
