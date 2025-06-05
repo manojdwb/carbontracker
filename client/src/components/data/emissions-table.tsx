@@ -132,6 +132,7 @@ export default function EmissionsTable() {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Component</TableHead>
+                    <TableHead>Scope</TableHead>
                     <TableHead>Date</TableHead>
                     <TableHead>Quantity</TableHead>
                     <TableHead>Emission Factor</TableHead>
@@ -152,6 +153,11 @@ export default function EmissionsTable() {
                             {entry.componentType.replace('-', ' ')}
                           </span>
                         </div>
+                      </TableCell>
+                      <TableCell>
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 capitalize">
+                          {entry.scope?.replace('-', ' ')}
+                        </span>
                       </TableCell>
                       <TableCell className="text-muted-foreground">{entry.date}</TableCell>
                       <TableCell>{entry.quantity} units</TableCell>

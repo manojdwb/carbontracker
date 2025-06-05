@@ -23,6 +23,7 @@ export default function DataEntryForm() {
     resolver: zodResolver(insertEmissionEntrySchema),
     defaultValues: {
       componentType: "coal",
+      scope: "scope-1",
       quantity: 0,
       date: new Date().toISOString().split('T')[0],
       calorificValue: 0,
@@ -84,7 +85,7 @@ export default function DataEntryForm() {
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <FormField
                 control={form.control}
                 name="componentType"
@@ -102,6 +103,29 @@ export default function DataEntryForm() {
                         <SelectItem value="diesel">Diesel</SelectItem>
                         <SelectItem value="natural-gas">Natural Gas</SelectItem>
                         <SelectItem value="electricity">Electricity</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="scope"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Emission Scope</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select scope" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="scope-1">Scope 1</SelectItem>
+                        <SelectItem value="scope-2">Scope 2</SelectItem>
+                        <SelectItem value="scope-3">Scope 3</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />

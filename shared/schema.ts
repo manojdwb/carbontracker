@@ -11,6 +11,7 @@ export const users = pgTable("users", {
 export const emissionEntries = pgTable("emission_entries", {
   id: serial("id").primaryKey(),
   componentType: text("component_type").notNull(),
+  scope: text("scope").notNull(),
   quantity: decimal("quantity", { precision: 12, scale: 4 }).notNull(),
   date: text("date").notNull(),
   calorificValue: decimal("calorific_value", { precision: 12, scale: 4 }),
@@ -40,6 +41,9 @@ export const insertEmissionEntrySchema = createInsertSchema(emissionEntries).omi
   date: z.string().min(1, "Date is required"),
   componentType: z.enum(["coal", "diesel", "natural-gas", "electricity"], {
     errorMap: () => ({ message: "Please select a valid component type" })
+  }),
+  scope: z.enum(["scope-1", "scope-2", "scope-3"], {
+    errorMap: () => ({ message: "Please select a valid emission scope" })
   }),
 });
 
