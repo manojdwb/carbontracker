@@ -39,51 +39,68 @@ export default function Analytics() {
           {/* Emission by Category Tab */}
           {activeTab === "category" && (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Main Category Chart */}
+              {/* Main Category Chart - Treemap */}
               <Card>
                 <CardHeader>
                   <CardTitle className="text-lg">Emissions in tCO2e by Category</CardTitle>
-                  <div className="text-sm text-muted-foreground">All: 100</div>
+                  <div className="text-sm text-muted-foreground bg-gray-100 px-2 py-1 rounded">All : 100</div>
                 </CardHeader>
                 <CardContent>
-                  <div className="relative h-80 bg-gradient-to-r from-blue-600 via-blue-500 to-blue-300 rounded-lg flex items-center justify-center">
-                    <div className="grid grid-cols-2 gap-4 text-white font-semibold">
-                      <div className="text-center">
-                        <div className="text-2xl mb-2">Scope 3 : 75</div>
+                  <div className="h-80 border-2 border-gray-200 rounded-lg overflow-hidden">
+                    <div className="flex h-full">
+                      {/* Scope 3 - 75% width */}
+                      <div className="bg-blue-600 flex items-center justify-center text-white font-medium text-lg" style={{ width: '75%' }}>
+                        Scope 3 : 75
                       </div>
-                      <div className="text-center">
-                        <div className="text-lg mb-2">Scope 1 : 20</div>
-                        <div className="text-lg">Scope 2 : 5</div>
+                      <div className="flex flex-col" style={{ width: '25%' }}>
+                        {/* Scope 1 - 20/25 = 80% of remaining */}
+                        <div className="bg-blue-400 flex items-center justify-center text-white font-medium" style={{ height: '80%' }}>
+                          Scope 1 : 20
+                        </div>
+                        {/* Scope 2 - 5/25 = 20% of remaining */}
+                        <div className="bg-blue-300 flex items-center justify-center text-white font-medium" style={{ height: '20%' }}>
+                          Scope 2 : 5
+                        </div>
                       </div>
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
-              {/* Scope 1 Breakdown */}
+              {/* Scope 1 Breakdown - Treemap */}
               <Card>
                 <CardHeader>
                   <CardTitle className="text-lg">Scope 1 Emissions in tCO2e</CardTitle>
-                  <div className="text-sm text-muted-foreground">All : 100%</div>
+                  <div className="text-sm text-muted-foreground bg-gray-100 px-2 py-1 rounded">All : 100%</div>
                 </CardHeader>
                 <CardContent>
-                  <div className="h-80 bg-gradient-to-br from-blue-400 to-blue-200 rounded-lg p-4">
-                    <div className="grid grid-cols-2 gap-2 h-full text-white text-sm">
-                      <div className="bg-blue-500 rounded p-2 flex items-center justify-center">
-                        <span>HSD : 30%</span>
-                      </div>
-                      <div className="bg-blue-400 rounded p-2 flex items-center justify-center">
-                        <span>Natural Gas : 20%</span>
-                      </div>
-                      <div className="bg-blue-600 rounded p-2 flex items-center justify-center">
-                        <span>Process CO2 Emissions : 30%</span>
-                      </div>
-                      <div className="grid grid-rows-2 gap-2">
-                        <div className="bg-blue-300 rounded p-2 flex items-center justify-center">
-                          <span>Biomass : 20%</span>
+                  <div className="h-80 border-2 border-gray-200 rounded-lg overflow-hidden">
+                    <div className="flex h-full">
+                      {/* Left column - HSD (20%) and Process CO2 (20%) */}
+                      <div className="flex flex-col" style={{ width: '40%' }}>
+                        <div className="bg-blue-400 flex items-center justify-center text-white font-medium border-b border-white" style={{ height: '50%' }}>
+                          HSD : 20%
                         </div>
-                        <div className="bg-blue-200 rounded p-2 flex items-center justify-center text-gray-700">
-                          <span>Coal : 20%</span>
+                        <div className="bg-blue-600 flex items-center justify-center text-white font-medium" style={{ height: '50%' }}>
+                          Process CO2 Emissions : 20%
+                        </div>
+                      </div>
+                      
+                      {/* Right column */}
+                      <div className="flex flex-col" style={{ width: '60%' }}>
+                        {/* Natural Gas (20%) - top half */}
+                        <div className="bg-blue-500 flex items-center justify-center text-white font-medium border-b border-white" style={{ height: '33.33%' }}>
+                          Natural Gas : 20%
+                        </div>
+                        
+                        {/* Bottom half split between Biomass and Coal */}
+                        <div className="flex" style={{ height: '66.67%' }}>
+                          <div className="bg-blue-300 flex items-center justify-center text-white font-medium border-r border-white" style={{ width: '50%' }}>
+                            Biomass : 20%
+                          </div>
+                          <div className="bg-blue-200 flex items-center justify-center text-gray-700 font-medium" style={{ width: '50%' }}>
+                            Coal : 20%
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -91,48 +108,66 @@ export default function Analytics() {
                 </CardContent>
               </Card>
 
-              {/* Scope 2 Chart */}
+              {/* Scope 2 Chart - Treemap */}
               <Card>
                 <CardHeader>
                   <CardTitle className="text-lg">Scope 2 Emissions in tCO2e</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="h-60 bg-gradient-to-r from-blue-600 to-blue-300 rounded-lg flex items-center justify-center">
-                    <div className="text-white font-semibold text-center">
-                      <div className="text-xl">Electricity : 100,000</div>
-                      <div className="text-lg mt-2">Steam : 20,000</div>
+                  <div className="h-60 border-2 border-gray-200 rounded-lg overflow-hidden">
+                    <div className="flex h-full">
+                      {/* Electricity takes ~83% (100k out of 120k total) */}
+                      <div className="bg-blue-600 flex items-center justify-center text-white font-medium border-r border-white" style={{ width: '83.33%' }}>
+                        Electricity : 100,000
+                      </div>
+                      {/* Steam takes ~17% (20k out of 120k total) */}
+                      <div className="bg-blue-300 flex items-center justify-center text-gray-700 font-medium" style={{ width: '16.67%' }}>
+                        Steam : 20,000
+                      </div>
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
-              {/* Scope 3 Breakdown */}
+              {/* Scope 3 Breakdown - Treemap */}
               <Card>
                 <CardHeader>
                   <CardTitle className="text-lg">Scope 3 Emissions in tCO2e</CardTitle>
-                  <div className="text-sm text-muted-foreground">All : 100% | Scope 3 (Upstream) : 91.88%</div>
+                  <div className="text-sm text-muted-foreground bg-gray-100 px-2 py-1 rounded">
+                    All : 100% | Scope 3 (Upstream) : 91.88%
+                  </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="h-60 bg-gradient-to-br from-blue-600 to-blue-200 rounded-lg p-4">
-                    <div className="grid grid-cols-2 gap-2 h-full text-white text-sm">
-                      <div className="bg-blue-600 rounded p-2 flex items-center justify-center">
-                        <span>Purchased Goods and Services : 55.25%</span>
+                  <div className="h-60 border-2 border-gray-200 rounded-lg overflow-hidden">
+                    <div className="flex h-full">
+                      {/* Left side - Purchased Goods and Services (55.25%) */}
+                      <div className="bg-blue-600 flex items-center justify-center text-white font-medium border-r border-white" style={{ width: '55.25%' }}>
+                        Purchased Goods and Services : 55.25%
                       </div>
-                      <div className="bg-blue-400 rounded p-2 flex items-center justify-center">
-                        <span>Capital Goods : 22.00%</span>
-                      </div>
-                      <div className="bg-blue-500 rounded p-2 flex items-center justify-center">
-                        <span>Fuel & Energy Activities : 19.33%</span>
-                      </div>
-                      <div className="grid grid-rows-3 gap-1">
-                        <div className="bg-blue-300 rounded p-1 flex items-center justify-center text-xs">
-                          <span>Downstream</span>
+                      
+                      {/* Right side split */}
+                      <div className="flex flex-col" style={{ width: '44.75%' }}>
+                        {/* Capital Goods (22%) */}
+                        <div className="bg-blue-400 flex items-center justify-center text-white font-medium border-b border-white" style={{ height: '49.16%' }}>
+                          Capital Goods : 22.00%
                         </div>
-                        <div className="bg-blue-200 rounded p-1 flex items-center justify-center text-xs text-gray-700">
-                          <span>Employee</span>
+                        
+                        {/* Fuel & Energy Activities (19.33%) */}
+                        <div className="bg-blue-500 flex items-center justify-center text-white font-medium border-b border-white" style={{ height: '43.17%' }}>
+                          Fuel & Energy Activities : 19.33%
                         </div>
-                        <div className="bg-blue-100 rounded p-1 flex items-center justify-center text-xs text-gray-700">
-                          <span>Business</span>
+                        
+                        {/* Small sections at bottom */}
+                        <div className="flex" style={{ height: '7.67%' }}>
+                          <div className="bg-blue-300 flex items-center justify-center text-xs text-white border-r border-white" style={{ width: '40%' }}>
+                            Down...
+                          </div>
+                          <div className="bg-blue-200 flex items-center justify-center text-xs text-gray-700 border-r border-white" style={{ width: '30%' }}>
+                            Em...
+                          </div>
+                          <div className="bg-blue-100 flex items-center justify-center text-xs text-gray-700" style={{ width: '30%' }}>
+                            Bus... Proce...
+                          </div>
                         </div>
                       </div>
                     </div>
