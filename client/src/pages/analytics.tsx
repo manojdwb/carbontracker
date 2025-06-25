@@ -18,11 +18,33 @@ export default function Analytics() {
   ];
 
   const monitoringCategories = [
-    { id: "energy", label: "Energy", subcategories: ["electricity", "gas", "natural-gas", "diesel"] },
-    { id: "water", label: "Water", subcategories: ["consumption", "treatment"] },
-    { id: "waste", label: "Waste", subcategories: ["solid", "liquid", "hazardous"] },
-    { id: "coal", label: "Coal", subcategories: ["thermal", "coking"] },
-    { id: "natural-gas", label: "Natural Gas", subcategories: ["pipeline", "lng"] }
+    { 
+      id: "energy", 
+      label: "Energy", 
+      subcategories: [
+        { id: "electricity", label: "Electricity" },
+        { id: "natural-gas", label: "Natural Gas" },
+        { id: "renewable-energy", label: "Renewable Energy" },
+        { id: "diesel", label: "Diesel" }
+      ]
+    },
+    { 
+      id: "water", 
+      label: "Water", 
+      subcategories: [
+        { id: "consumption", label: "Water Consumption" },
+        { id: "treatment", label: "Water Treatment" }
+      ]
+    },
+    { 
+      id: "waste", 
+      label: "Waste", 
+      subcategories: [
+        { id: "solid", label: "Solid Waste" },
+        { id: "liquid", label: "Liquid Waste" },
+        { id: "hazardous", label: "Hazardous Waste" }
+      ]
+    }
   ];
 
   return (
@@ -192,53 +214,74 @@ export default function Analytics() {
           {/* Monitoring Tab */}
           {activeTab === "monitoring" && (
             <div className="space-y-6">
-              {/* Monitoring Navigation */}
+              {/* Monitoring Navigation with Hover Menus */}
               <div className="flex items-center space-x-4 bg-gray-50 p-4 rounded-lg">
-                <span className="font-medium text-gray-700">Monitoring</span>
-                <span className="text-gray-400">›</span>
-                
-                {/* Category Dropdown */}
-                <select
-                  value={monitoringCategory}
-                  onChange={(e) => {
-                    setMonitoringCategory(e.target.value);
-                    const category = monitoringCategories.find(cat => cat.id === e.target.value);
-                    if (category) {
-                      setMonitoringSubCategory(category.subcategories[0]);
-                    }
-                  }}
-                  className="px-3 py-1 border border-gray-300 rounded bg-white"
-                >
-                  {monitoringCategories.map((category) => (
-                    <option key={category.id} value={category.id}>
-                      {category.label}
-                    </option>
-                  ))}
-                </select>
-                
-                <span className="text-gray-400">›</span>
-                
-                {/* Subcategory Dropdown */}
-                <select
-                  value={monitoringSubCategory}
-                  onChange={(e) => setMonitoringSubCategory(e.target.value)}
-                  className="px-3 py-1 border border-gray-300 rounded bg-white capitalize"
-                >
-                  {monitoringCategories
-                    .find(cat => cat.id === monitoringCategory)
-                    ?.subcategories.map((subcat) => (
-                      <option key={subcat} value={subcat}>
-                        {subcat.charAt(0).toUpperCase() + subcat.slice(1)}
-                      </option>
+                {/* Monitoring Root */}
+                <div className="relative group">
+                  <span className="font-medium text-gray-700 cursor-pointer hover:text-blue-600">
+                    Monitoring
+                  </span>
+                  
+                  {/* Main Categories Popup */}
+                  <div className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 min-w-[150px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                    {monitoringCategories.map((category) => (
+                      <div key={category.id} className="relative group/sub">
+                        <div
+                          className="px-4 py-2 hover:bg-blue-50 cursor-pointer border-b last:border-b-0 flex items-center justify-between"
+                          onClick={() => {
+                            setMonitoringCategory(category.id);
+                            setMonitoringSubCategory(category.subcategories[0].id);
+                          }}
+                        >
+                          <span>{category.label}</span>
+                          <span className="text-gray-400">›</span>
+                        </div>
+                        
+                        {/* Subcategories Popup */}
+                        <div className="absolute left-full top-0 ml-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 min-w-[180px] opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible transition-all duration-200">
+                          {category.subcategories.map((subcat) => (
+                            <div
+                              key={subcat.id}
+                              className="px-4 py-2 hover:bg-blue-50 cursor-pointer border-b last:border-b-0"
+                              onClick={() => {
+                                setMonitoringCategory(category.id);
+                                setMonitoringSubCategory(subcat.id);
+                              }}
+                            >
+                              {subcat.label}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
                     ))}
-                </select>
+                  </div>
+                </div>
+                
+                <span className="text-gray-400">›</span>
+                
+                {/* Current Navigation Path */}
+                <div className="flex items-center space-x-2">
+                  <span className="font-medium text-blue-600">
+                    {monitoringCategories.find(cat => cat.id === monitoringCategory)?.label}
+                  </span>
+                  <span className="text-gray-400">›</span>
+                  <span className="font-medium text-blue-600">
+                    {monitoringCategories
+                      .find(cat => cat.id === monitoringCategory)
+                      ?.subcategories.find(sub => sub.id === monitoringSubCategory)?.label}
+                  </span>
+                </div>
               </div>
 
               {/* Monitoring Data Table */}
               <Card>
                 <CardHeader>
-                  <CardTitle className="capitalize">
-                    {monitoringCategory} - {monitoringSubCategory} Monitoring Data
+                  <CardTitle>
+                    Monitoring › {monitoringCategories.find(cat => cat.id === monitoringCategory)?.label} › {
+                      monitoringCategories
+                        .find(cat => cat.id === monitoringCategory)
+                        ?.subcategories.find(sub => sub.id === monitoringSubCategory)?.label
+                    }
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
