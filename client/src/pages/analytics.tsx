@@ -334,42 +334,42 @@ export default function Analytics() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="overflow-x-auto">
-                    <table className="w-full border-collapse border border-gray-300">
+                  <div className="w-full">
+                    <table className="w-full border-collapse border border-gray-300 table-auto">
                       <thead>
                         <tr className="bg-gray-100">
-                          <th className="border border-gray-300 px-3 py-2 text-left text-sm">Sl. No.</th>
-                          <th className="border border-gray-300 px-3 py-2 text-left text-sm">Date of Entry</th>
-                          <th className="border border-gray-300 px-3 py-2 text-left text-sm">Start Date</th>
-                          <th className="border border-gray-300 px-3 py-2 text-left text-sm">End Date</th>
-                          <th className="border border-gray-300 px-3 py-2 text-left text-sm">No. of Days</th>
-                          <th className="border border-gray-300 px-3 py-2 text-left text-sm">Plant Name & Location</th>
-                          <th className="border border-gray-300 px-3 py-2 text-left text-sm">Scope</th>
-                          <th className="border border-gray-300 px-3 py-2 text-left text-sm">Vendor</th>
-                          <th className="border border-gray-300 px-3 py-2 text-left text-sm">Qty</th>
-                          <th className="border border-gray-300 px-3 py-2 text-left text-sm">Unit</th>
-                          <th className="border border-gray-300 px-3 py-2 text-left text-sm">Cost (INR)</th>
-                          <th className="border border-gray-300 px-3 py-2 text-left text-sm">Emissions (tCO2e)</th>
-                          <th className="border border-gray-300 px-3 py-2 text-left text-sm">Remarks</th>
-                          <th className="border border-gray-300 px-3 py-2 text-left text-sm">Attachments</th>
+                          <th className="border border-gray-300 px-2 py-2 text-left text-xs w-16">Sl. No.</th>
+                          <th className="border border-gray-300 px-2 py-2 text-left text-xs w-24">Date of Entry</th>
+                          <th className="border border-gray-300 px-2 py-2 text-left text-xs w-24">Start Date</th>
+                          <th className="border border-gray-300 px-2 py-2 text-left text-xs w-24">End Date</th>
+                          <th className="border border-gray-300 px-2 py-2 text-left text-xs w-20">No. of Days</th>
+                          <th className="border border-gray-300 px-2 py-2 text-left text-xs w-32">Plant Name & Location</th>
+                          <th className="border border-gray-300 px-2 py-2 text-left text-xs w-16">Scope</th>
+                          <th className="border border-gray-300 px-2 py-2 text-left text-xs w-24">Vendor</th>
+                          <th className="border border-gray-300 px-2 py-2 text-left text-xs w-16">Qty</th>
+                          <th className="border border-gray-300 px-2 py-2 text-left text-xs w-16">Unit</th>
+                          <th className="border border-gray-300 px-2 py-2 text-left text-xs w-20">Cost (INR)</th>
+                          <th className="border border-gray-300 px-2 py-2 text-left text-xs w-20">Emissions (tCO2e)</th>
+                          <th className="border border-gray-300 px-2 py-2 text-left text-xs">Remarks</th>
+                          <th className="border border-gray-300 px-2 py-2 text-left text-xs w-28">Attachments</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr>
-                          <td className="border border-gray-300 px-3 py-2 text-sm">1</td>
-                          <td className="border border-gray-300 px-3 py-2 text-sm">10-02-2025</td>
-                          <td className="border border-gray-300 px-3 py-2 text-sm">01-01-2025</td>
-                          <td className="border border-gray-300 px-3 py-2 text-sm">31-01-2025</td>
-                          <td className="border border-gray-300 px-3 py-2 text-sm">31</td>
-                          <td className="border border-gray-300 px-3 py-2 text-sm">XYZ, Mumbai, India</td>
-                          <td className="border border-gray-300 px-3 py-2 text-sm">2</td>
-                          <td className="border border-gray-300 px-3 py-2 text-sm">Tata Power</td>
-                          <td className="border border-gray-300 px-3 py-2 text-sm">1000</td>
-                          <td className="border border-gray-300 px-3 py-2 text-sm">kWh</td>
-                          <td className="border border-gray-300 px-3 py-2 text-sm">10,000</td>
-                          <td className="border border-gray-300 px-3 py-2 text-sm">0.5</td>
-                          <td className="border border-gray-300 px-3 py-2 text-sm">Used for Plant Operations</td>
-                          <td className="border border-gray-300 px-3 py-2 text-sm">
+                          <td className="border border-gray-300 px-2 py-2 text-xs">1</td>
+                          <td className="border border-gray-300 px-2 py-2 text-xs">10-02-2025</td>
+                          <td className="border border-gray-300 px-2 py-2 text-xs">01-01-2025</td>
+                          <td className="border border-gray-300 px-2 py-2 text-xs">31-01-2025</td>
+                          <td className="border border-gray-300 px-2 py-2 text-xs">31</td>
+                          <td className="border border-gray-300 px-2 py-2 text-xs">XYZ, Mumbai, India</td>
+                          <td className="border border-gray-300 px-2 py-2 text-xs">2</td>
+                          <td className="border border-gray-300 px-2 py-2 text-xs">Tata Power</td>
+                          <td className="border border-gray-300 px-2 py-2 text-xs">1000</td>
+                          <td className="border border-gray-300 px-2 py-2 text-xs">kWh</td>
+                          <td className="border border-gray-300 px-2 py-2 text-xs">10,000</td>
+                          <td className="border border-gray-300 px-2 py-2 text-xs">0.5</td>
+                          <td className="border border-gray-300 px-2 py-2 text-xs">Used for Plant Operations</td>
+                          <td className="border border-gray-300 px-2 py-2 text-xs">
                             <div className="flex items-center space-x-1">
                               <span className="text-xs">📄</span>
                               <span className="text-xs">Bill_Jan2025.pdf</span>
@@ -377,22 +377,22 @@ export default function Analytics() {
                           </td>
                         </tr>
                         {/* Empty rows for demonstration */}
-                        {[...Array(5)].map((_, index) => (
+                        {[...Array(8)].map((_, index) => (
                           <tr key={index + 2}>
-                            <td className="border border-gray-300 px-3 py-2 text-sm">{index + 2}</td>
-                            <td className="border border-gray-300 px-3 py-2 text-sm">-</td>
-                            <td className="border border-gray-300 px-3 py-2 text-sm">-</td>
-                            <td className="border border-gray-300 px-3 py-2 text-sm">-</td>
-                            <td className="border border-gray-300 px-3 py-2 text-sm">-</td>
-                            <td className="border border-gray-300 px-3 py-2 text-sm">-</td>
-                            <td className="border border-gray-300 px-3 py-2 text-sm">-</td>
-                            <td className="border border-gray-300 px-3 py-2 text-sm">-</td>
-                            <td className="border border-gray-300 px-3 py-2 text-sm">-</td>
-                            <td className="border border-gray-300 px-3 py-2 text-sm">-</td>
-                            <td className="border border-gray-300 px-3 py-2 text-sm">-</td>
-                            <td className="border border-gray-300 px-3 py-2 text-sm">-</td>
-                            <td className="border border-gray-300 px-3 py-2 text-sm">-</td>
-                            <td className="border border-gray-300 px-3 py-2 text-sm">-</td>
+                            <td className="border border-gray-300 px-2 py-2 text-xs">{index + 2}</td>
+                            <td className="border border-gray-300 px-2 py-2 text-xs">-</td>
+                            <td className="border border-gray-300 px-2 py-2 text-xs">-</td>
+                            <td className="border border-gray-300 px-2 py-2 text-xs">-</td>
+                            <td className="border border-gray-300 px-2 py-2 text-xs">-</td>
+                            <td className="border border-gray-300 px-2 py-2 text-xs">-</td>
+                            <td className="border border-gray-300 px-2 py-2 text-xs">-</td>
+                            <td className="border border-gray-300 px-2 py-2 text-xs">-</td>
+                            <td className="border border-gray-300 px-2 py-2 text-xs">-</td>
+                            <td className="border border-gray-300 px-2 py-2 text-xs">-</td>
+                            <td className="border border-gray-300 px-2 py-2 text-xs">-</td>
+                            <td className="border border-gray-300 px-2 py-2 text-xs">-</td>
+                            <td className="border border-gray-300 px-2 py-2 text-xs">-</td>
+                            <td className="border border-gray-300 px-2 py-2 text-xs">-</td>
                           </tr>
                         ))}
                       </tbody>
