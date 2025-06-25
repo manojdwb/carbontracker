@@ -1,13 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "@/components/layout/header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { ChevronDown } from "lucide-react";
 
 export default function Analytics() {
   const [activeTab, setActiveTab] = useState("category");
-
+  const [showMonitoringDropdown, setShowMonitoringDropdown] = useState(false);
+  const [showEnergyDropdown, setShowEnergyDropdown] = useState(false);
   const [monitoringCategory, setMonitoringCategory] = useState("energy");
   const [monitoringSubCategory, setMonitoringSubCategory] = useState("electricity");
+
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest('.dropdown-container')) {
+        setShowMonitoringDropdown(false);
+        setShowEnergyDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const tabs = [
     { id: "category", label: "Emission by Category" },
@@ -214,63 +232,94 @@ export default function Analytics() {
           {/* Monitoring Tab */}
           {activeTab === "monitoring" && (
             <div className="space-y-6">
-              {/* Monitoring Navigation with Hover Menus */}
-              <div className="flex items-center space-x-4 bg-gray-50 p-4 rounded-lg">
-                {/* Monitoring Root */}
-                <div className="relative group">
-                  <span className="font-medium text-gray-700 cursor-pointer hover:text-blue-600">
-                    Monitoring
-                  </span>
+              {/* Monitoring Navigation with Click Dropdowns */}
+              <div className="flex items-center space-x-4 bg-gray-50 p-4 rounded-lg dropdown-container">
+                {/* Monitoring Dropdown */}
+                <div className="relative">
+                  <button
+                    onClick={() => {
+                      setShowMonitoringDropdown(!showMonitoringDropdown);
+                      setShowEnergyDropdown(false);
+                    }}
+                    className="flex items-center space-x-2 px-3 py-2 bg-white border border-gray-300 rounded hover:bg-gray-50 font-medium text-gray-700"
+                  >
+                    <span>Monitoring</span>
+                    <ChevronDown size={16} className={`transition-transform ${showMonitoringDropdown ? 'rotate-180' : ''}`} />
+                  </button>
                   
-                  {/* Main Categories Popup */}
-                  <div className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 min-w-[150px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                    {monitoringCategories.map((category) => (
-                      <div key={category.id} className="relative group/sub">
+                  {/* Main Categories Dropdown */}
+                  {showMonitoringDropdown && (
+                    <div className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 min-w-[150px]">
+                      {monitoringCategories.map((category) => (
                         <div
-                          className="px-4 py-2 hover:bg-blue-50 cursor-pointer border-b last:border-b-0 flex items-center justify-between"
+                          key={category.id}
+                          className="px-4 py-2 hover:bg-blue-50 cursor-pointer border-b last:border-b-0"
                           onClick={() => {
                             setMonitoringCategory(category.id);
                             setMonitoringSubCategory(category.subcategories[0].id);
+                            setShowMonitoringDropdown(false);
                           }}
                         >
-                          <span>{category.label}</span>
-                          <span className="text-gray-400">›</span>
+                          {category.label}
                         </div>
-                        
-                        {/* Subcategories Popup */}
-                        <div className="absolute left-full top-0 ml-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 min-w-[180px] opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible transition-all duration-200">
-                          {category.subcategories.map((subcat) => (
+                      ))}
+                    </div>
+                  )}
+                </div>
+                
+                <span className="text-gray-400">›</span>
+                
+                {/* Energy Dropdown */}
+                {monitoringCategory === "energy" && (
+                  <div className="relative">
+                    <button
+                      onClick={() => {
+                        setShowEnergyDropdown(!showEnergyDropdown);
+                        setShowMonitoringDropdown(false);
+                      }}
+                      className="flex items-center space-x-2 px-3 py-2 bg-white border border-gray-300 rounded hover:bg-gray-50 font-medium text-blue-600"
+                    >
+                      <span>Energy</span>
+                      <ChevronDown size={16} className={`transition-transform ${showEnergyDropdown ? 'rotate-180' : ''}`} />
+                    </button>
+                    
+                    {/* Energy Subcategories Dropdown */}
+                    {showEnergyDropdown && (
+                      <div className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 min-w-[180px]">
+                        {monitoringCategories
+                          .find(cat => cat.id === "energy")
+                          ?.subcategories.map((subcat) => (
                             <div
                               key={subcat.id}
                               className="px-4 py-2 hover:bg-blue-50 cursor-pointer border-b last:border-b-0"
                               onClick={() => {
-                                setMonitoringCategory(category.id);
                                 setMonitoringSubCategory(subcat.id);
+                                setShowEnergyDropdown(false);
                               }}
                             >
                               {subcat.label}
                             </div>
                           ))}
-                        </div>
                       </div>
-                    ))}
+                    )}
                   </div>
-                </div>
+                )}
                 
-                <span className="text-gray-400">›</span>
-                
-                {/* Current Navigation Path */}
-                <div className="flex items-center space-x-2">
+                {/* Other Categories (non-dropdown) */}
+                {monitoringCategory !== "energy" && (
                   <span className="font-medium text-blue-600">
                     {monitoringCategories.find(cat => cat.id === monitoringCategory)?.label}
                   </span>
-                  <span className="text-gray-400">›</span>
-                  <span className="font-medium text-blue-600">
-                    {monitoringCategories
-                      .find(cat => cat.id === monitoringCategory)
-                      ?.subcategories.find(sub => sub.id === monitoringSubCategory)?.label}
-                  </span>
-                </div>
+                )}
+                
+                <span className="text-gray-400">›</span>
+                
+                {/* Current Subcategory */}
+                <span className="font-medium text-blue-600">
+                  {monitoringCategories
+                    .find(cat => cat.id === monitoringCategory)
+                    ?.subcategories.find(sub => sub.id === monitoringSubCategory)?.label}
+                </span>
               </div>
 
               {/* Monitoring Data Table */}
