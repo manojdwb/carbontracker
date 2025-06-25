@@ -6,11 +6,23 @@ import { Button } from "@/components/ui/button";
 export default function Analytics() {
   const [activeTab, setActiveTab] = useState("category");
 
+  const [monitoringCategory, setMonitoringCategory] = useState("energy");
+  const [monitoringSubCategory, setMonitoringSubCategory] = useState("electricity");
+
   const tabs = [
     { id: "category", label: "Emission by Category" },
     { id: "location", label: "Emissions by Location" },
+    { id: "monitoring", label: "Monitoring" },
     { id: "predictive", label: "Predictive Analysis" },
     { id: "roadmap", label: "Roadmap & Strategy" }
+  ];
+
+  const monitoringCategories = [
+    { id: "energy", label: "Energy", subcategories: ["electricity", "gas", "natural-gas", "diesel"] },
+    { id: "water", label: "Water", subcategories: ["consumption", "treatment"] },
+    { id: "waste", label: "Waste", subcategories: ["solid", "liquid", "hazardous"] },
+    { id: "coal", label: "Coal", subcategories: ["thermal", "coking"] },
+    { id: "natural-gas", label: "Natural Gas", subcategories: ["pipeline", "lng"] }
   ];
 
   return (
@@ -171,6 +183,128 @@ export default function Analytics() {
                         </div>
                       </div>
                     </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
+
+          {/* Monitoring Tab */}
+          {activeTab === "monitoring" && (
+            <div className="space-y-6">
+              {/* Monitoring Navigation */}
+              <div className="flex items-center space-x-4 bg-gray-50 p-4 rounded-lg">
+                <span className="font-medium text-gray-700">Monitoring</span>
+                <span className="text-gray-400">›</span>
+                
+                {/* Category Dropdown */}
+                <select
+                  value={monitoringCategory}
+                  onChange={(e) => {
+                    setMonitoringCategory(e.target.value);
+                    const category = monitoringCategories.find(cat => cat.id === e.target.value);
+                    if (category) {
+                      setMonitoringSubCategory(category.subcategories[0]);
+                    }
+                  }}
+                  className="px-3 py-1 border border-gray-300 rounded bg-white"
+                >
+                  {monitoringCategories.map((category) => (
+                    <option key={category.id} value={category.id}>
+                      {category.label}
+                    </option>
+                  ))}
+                </select>
+                
+                <span className="text-gray-400">›</span>
+                
+                {/* Subcategory Dropdown */}
+                <select
+                  value={monitoringSubCategory}
+                  onChange={(e) => setMonitoringSubCategory(e.target.value)}
+                  className="px-3 py-1 border border-gray-300 rounded bg-white capitalize"
+                >
+                  {monitoringCategories
+                    .find(cat => cat.id === monitoringCategory)
+                    ?.subcategories.map((subcat) => (
+                      <option key={subcat} value={subcat}>
+                        {subcat.charAt(0).toUpperCase() + subcat.slice(1)}
+                      </option>
+                    ))}
+                </select>
+              </div>
+
+              {/* Monitoring Data Table */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="capitalize">
+                    {monitoringCategory} - {monitoringSubCategory} Monitoring Data
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="overflow-x-auto">
+                    <table className="w-full border-collapse border border-gray-300">
+                      <thead>
+                        <tr className="bg-gray-100">
+                          <th className="border border-gray-300 px-3 py-2 text-left text-sm">Sl. No.</th>
+                          <th className="border border-gray-300 px-3 py-2 text-left text-sm">Date of Entry</th>
+                          <th className="border border-gray-300 px-3 py-2 text-left text-sm">Start Date</th>
+                          <th className="border border-gray-300 px-3 py-2 text-left text-sm">End Date</th>
+                          <th className="border border-gray-300 px-3 py-2 text-left text-sm">No. of Days</th>
+                          <th className="border border-gray-300 px-3 py-2 text-left text-sm">Plant Name & Location</th>
+                          <th className="border border-gray-300 px-3 py-2 text-left text-sm">Scope</th>
+                          <th className="border border-gray-300 px-3 py-2 text-left text-sm">Vendor</th>
+                          <th className="border border-gray-300 px-3 py-2 text-left text-sm">Qty</th>
+                          <th className="border border-gray-300 px-3 py-2 text-left text-sm">Unit</th>
+                          <th className="border border-gray-300 px-3 py-2 text-left text-sm">Cost (INR)</th>
+                          <th className="border border-gray-300 px-3 py-2 text-left text-sm">Emissions (tCO2e)</th>
+                          <th className="border border-gray-300 px-3 py-2 text-left text-sm">Remarks</th>
+                          <th className="border border-gray-300 px-3 py-2 text-left text-sm">Attachments</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td className="border border-gray-300 px-3 py-2 text-sm">1</td>
+                          <td className="border border-gray-300 px-3 py-2 text-sm">10-02-2025</td>
+                          <td className="border border-gray-300 px-3 py-2 text-sm">01-01-2025</td>
+                          <td className="border border-gray-300 px-3 py-2 text-sm">31-01-2025</td>
+                          <td className="border border-gray-300 px-3 py-2 text-sm">31</td>
+                          <td className="border border-gray-300 px-3 py-2 text-sm">XYZ, Mumbai, India</td>
+                          <td className="border border-gray-300 px-3 py-2 text-sm">2</td>
+                          <td className="border border-gray-300 px-3 py-2 text-sm">Tata Power</td>
+                          <td className="border border-gray-300 px-3 py-2 text-sm">1000</td>
+                          <td className="border border-gray-300 px-3 py-2 text-sm">kWh</td>
+                          <td className="border border-gray-300 px-3 py-2 text-sm">10,000</td>
+                          <td className="border border-gray-300 px-3 py-2 text-sm">0.5</td>
+                          <td className="border border-gray-300 px-3 py-2 text-sm">Used for Plant Operations</td>
+                          <td className="border border-gray-300 px-3 py-2 text-sm">
+                            <div className="flex items-center space-x-1">
+                              <span className="text-xs">📄</span>
+                              <span className="text-xs">Bill_Jan2025.pdf</span>
+                            </div>
+                          </td>
+                        </tr>
+                        {/* Empty rows for demonstration */}
+                        {[...Array(5)].map((_, index) => (
+                          <tr key={index + 2}>
+                            <td className="border border-gray-300 px-3 py-2 text-sm">{index + 2}</td>
+                            <td className="border border-gray-300 px-3 py-2 text-sm">-</td>
+                            <td className="border border-gray-300 px-3 py-2 text-sm">-</td>
+                            <td className="border border-gray-300 px-3 py-2 text-sm">-</td>
+                            <td className="border border-gray-300 px-3 py-2 text-sm">-</td>
+                            <td className="border border-gray-300 px-3 py-2 text-sm">-</td>
+                            <td className="border border-gray-300 px-3 py-2 text-sm">-</td>
+                            <td className="border border-gray-300 px-3 py-2 text-sm">-</td>
+                            <td className="border border-gray-300 px-3 py-2 text-sm">-</td>
+                            <td className="border border-gray-300 px-3 py-2 text-sm">-</td>
+                            <td className="border border-gray-300 px-3 py-2 text-sm">-</td>
+                            <td className="border border-gray-300 px-3 py-2 text-sm">-</td>
+                            <td className="border border-gray-300 px-3 py-2 text-sm">-</td>
+                            <td className="border border-gray-300 px-3 py-2 text-sm">-</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
                 </CardContent>
               </Card>
