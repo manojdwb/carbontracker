@@ -30,6 +30,62 @@ export class MemStorage implements IStorage {
     this.emissionEntries = new Map();
     this.currentUserId = 1;
     this.currentEntryId = 1;
+    
+    // Add sample data for demonstration
+    this.initializeSampleData();
+  }
+
+  private initializeSampleData() {
+    const sampleEntries = [
+      {
+        componentType: "electricity",
+        emissionScope: "scope-2",
+        quantity: 1000,
+        unit: "kWh",
+        emissionFactor: 0.5,
+        calorificValue: 1,
+        cost: 10000,
+        date: "2024-01-15",
+        notes: "Monthly electricity consumption"
+      },
+      {
+        componentType: "diesel",
+        emissionScope: "scope-1", 
+        quantity: 500,
+        unit: "liters",
+        emissionFactor: 2.7,
+        calorificValue: 1,
+        cost: 45000,
+        date: "2024-01-20",
+        notes: "Generator fuel consumption"
+      },
+      {
+        componentType: "natural-gas",
+        emissionScope: "scope-1",
+        quantity: 200,
+        unit: "cubic meters",
+        emissionFactor: 2.0,
+        calorificValue: 1,
+        cost: 15000,
+        date: "2024-01-25",
+        notes: "Heating and cooking gas"
+      },
+      {
+        componentType: "coal",
+        emissionScope: "scope-1",
+        quantity: 1000,
+        unit: "kg",
+        emissionFactor: 2.4,
+        calorificValue: 1,
+        cost: 25000,
+        date: "2024-02-01",
+        notes: "Boiler fuel consumption"
+      }
+    ];
+
+    sampleEntries.forEach((entry) => {
+      this.createEmissionEntry(entry as any);
+    });
   }
 
   async getUser(id: number): Promise<User | undefined> {

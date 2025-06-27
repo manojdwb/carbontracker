@@ -33,6 +33,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get emissions summary (must come before :id route)
+  app.get("/api/emissions/summary", async (req, res) => {
+    try {
+      const summary = await storage.getEmissionsSummary();
+      res.json(summary);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch emissions summary" });
+    }
+  });
+
   // Get emission entry by ID
   app.get("/api/emissions/:id", async (req, res) => {
     try {
@@ -80,16 +90,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ message: "Emission entry deleted successfully" });
     } catch (error) {
       res.status(500).json({ message: "Failed to delete emission entry" });
-    }
-  });
-
-  // Get emissions summary
-  app.get("/api/emissions/summary", async (req, res) => {
-    try {
-      const summary = await storage.getEmissionsSummary();
-      res.json(summary);
-    } catch (error) {
-      res.status(500).json({ message: "Failed to fetch emissions summary" });
     }
   });
 
