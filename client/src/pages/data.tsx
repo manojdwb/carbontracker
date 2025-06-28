@@ -18,17 +18,25 @@ export default function Data() {
     document.getElementById('data-entry-form')?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // Mock project data based on your images
+  const handleDownloadTemplate = () => {
+    console.log("Download template clicked");
+  };
+
+  const handleBulkUpload = () => {
+    console.log("Bulk upload clicked");
+  };
+
+  // Project data
   const companywideProjects = [
-    { name: "Mumbai Plant", status: "15 out of 30 forms pending", owner: "ABC", progress: 50 },
-    { name: "Gujarat Plant", status: "15 out of 30 forms pending", owner: "XYZ", progress: 50 },
-    { name: "Karnataka Plant 3", status: "15 out of 30 forms pending", owner: "PNQ", progress: 50 },
+    { name: "Mumbai Plant", status: "15/30 entries filed", owner: "ABC", progress: 50 },
+    { name: "Gujarat Plant", status: "15/30 entries filed", owner: "XYZ", progress: 50 },
+    { name: "Karnataka Plant 3", status: "15/30 entries filed", owner: "PNQ", progress: 50 },
   ];
 
   const projectWiseData = [
-    { name: "Boiler 1", status: "15/30 forms pending", uploadedBy: "ABC", approvedBy: "X" },
-    { name: "Boiler 2", status: "15/30 forms pending", uploadedBy: "XYZ", approvedBy: "Y" },
-    { name: "Boiler 3", status: "15/30 forms pending", uploadedBy: "PNQ", approvedBy: "Z" },
+    { name: "Boiler 1", status: "15/30 entries filed", uploadedBy: "ABC", checkedBy: "Manager1", approvedBy: "X" },
+    { name: "Boiler 2", status: "15/30 entries filed", uploadedBy: "XYZ", checkedBy: "Manager2", approvedBy: "Y" },
+    { name: "Boiler 3", status: "15/30 entries filed", uploadedBy: "PNQ", checkedBy: "Manager3", approvedBy: "Z" },
   ];
 
   return (
@@ -38,6 +46,8 @@ export default function Data() {
         subtitle="Manage and view all emission entries"
         onExport={handleExport}
         onAddEntry={handleAddEntry}
+        onDownloadTemplate={handleDownloadTemplate}
+        onBulkUpload={handleBulkUpload}
       />
       
       <main className="flex-1 overflow-auto p-6">
@@ -46,17 +56,17 @@ export default function Data() {
             <DataEntryForm />
           </div>
           
-          {/* Project Status Section */}
+          {/* Activity Log Section */}
           <Card>
             <CardHeader>
-              <CardTitle>Project Status</CardTitle>
+              <CardTitle>Activity Log</CardTitle>
               <div className="flex space-x-2">
                 <Button
                   variant={activeTab === "companywide" ? "default" : "outline"}
                   onClick={() => setActiveTab("companywide")}
                   className="px-6"
                 >
-                  Companywide
+                  Company Wide
                 </Button>
                 <Button
                   variant={activeTab === "projectwise" ? "default" : "outline"}
@@ -104,6 +114,7 @@ export default function Data() {
                       <TableHead>Project Name</TableHead>
                       <TableHead>Status</TableHead>
                       <TableHead>Uploaded by</TableHead>
+                      <TableHead>Checked by</TableHead>
                       <TableHead>Approved by</TableHead>
                     </TableRow>
                   </TableHeader>
@@ -115,6 +126,7 @@ export default function Data() {
                           <span className="text-sm text-muted-foreground">{project.status}</span>
                         </TableCell>
                         <TableCell>{project.uploadedBy}</TableCell>
+                        <TableCell>{project.checkedBy}</TableCell>
                         <TableCell>{project.approvedBy}</TableCell>
                       </TableRow>
                     ))}

@@ -5,9 +5,11 @@ interface HeaderProps {
   subtitle: string;
   onExport?: () => void;
   onAddEntry?: () => void;
+  onDownloadTemplate?: () => void;
+  onBulkUpload?: () => void;
 }
 
-export default function Header({ title, subtitle, onExport, onAddEntry }: HeaderProps) {
+export default function Header({ title, subtitle, onExport, onAddEntry, onDownloadTemplate, onBulkUpload }: HeaderProps) {
   return (
     <header className="bg-card border-b border-border px-6 py-4">
       <div className="flex items-center justify-between">
@@ -20,6 +22,18 @@ export default function Header({ title, subtitle, onExport, onAddEntry }: Header
             <Button variant="outline" onClick={onExport}>
               <i className="fas fa-download mr-2"></i>
               Export Data
+            </Button>
+          )}
+          {onDownloadTemplate && (
+            <Button variant="outline" onClick={onDownloadTemplate}>
+              <i className="fas fa-download mr-2"></i>
+              Download Template
+            </Button>
+          )}
+          {onBulkUpload && (
+            <Button variant="outline" onClick={onBulkUpload}>
+              <i className="fas fa-upload mr-2"></i>
+              Bulk Upload
             </Button>
           )}
           {onAddEntry && (
