@@ -33,7 +33,7 @@ export default function ReportViewer() {
             <CardContent className="p-0">
               <div className="bg-gray-100 border rounded-lg" style={{ height: '70vh' }}>
                 <iframe 
-                  src="/attached_assets/Business responsibility and sustainability reporting by listed entitiesAnnexure1_p_1751810141674.pdf"
+                  src="/attached_assets/Business responsibility and sustainability reporting by listed entitiesAnnexure1_p_1751810445793.pdf"
                   width="100%"
                   height="100%"
                   style={{ border: 'none', borderRadius: '0.5rem' }}
@@ -50,7 +50,7 @@ export default function ReportViewer() {
                 <Button 
                   onClick={() => {
                     const link = document.createElement('a');
-                    link.href = '/attached_assets/Business responsibility and sustainability reporting by listed entitiesAnnexure1_p_1751810141674.pdf';
+                    link.href = '/attached_assets/Business responsibility and sustainability reporting by listed entitiesAnnexure1_p_1751810445793.pdf';
                     link.download = `${getReportTitle(reportType)}.pdf`;
                     link.click();
                   }}
