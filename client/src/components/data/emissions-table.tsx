@@ -90,7 +90,7 @@ export default function EmissionsTable() {
     <Card className="bg-card shadow-sm border border-border">
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
-          <span>Emissions Data</span>
+          <span>Activity Log</span>
           <div className="flex items-center space-x-3">
             <div className="relative">
               <Input

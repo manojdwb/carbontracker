@@ -14,6 +14,8 @@ export const emissionEntries = pgTable("emission_entries", {
   scope: text("scope").notNull(),
   quantity: decimal("quantity", { precision: 12, scale: 4 }).notNull(),
   date: text("date").notNull(),
+  startDate: text("start_date").notNull(),
+  endDate: text("end_date").notNull(),
   calorificValue: decimal("calorific_value", { precision: 12, scale: 4 }),
   emissionFactor: decimal("emission_factor", { precision: 12, scale: 6 }).notNull(),
   density: decimal("density", { precision: 12, scale: 4 }),
@@ -39,6 +41,8 @@ export const insertEmissionEntrySchema = createInsertSchema(emissionEntries).omi
   density: z.coerce.number().positive().optional(),
   costInr: z.coerce.number().positive().optional(),
   date: z.string().min(1, "Date is required"),
+  startDate: z.string().min(1, "Start date is required"),
+  endDate: z.string().min(1, "End date is required"),
   componentType: z.enum(["coal", "diesel", "natural-gas", "electricity"], {
     errorMap: () => ({ message: "Please select a valid component type" })
   }),

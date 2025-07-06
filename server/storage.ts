@@ -39,46 +39,50 @@ export class MemStorage implements IStorage {
     const sampleEntries = [
       {
         componentType: "electricity",
-        emissionScope: "scope-2",
+        scope: "scope-2",
         quantity: 1000,
-        unit: "kWh",
         emissionFactor: 0.5,
         calorificValue: 1,
-        cost: 10000,
+        costInr: 10000,
         date: "2024-01-15",
+        startDate: "2024-01-01",
+        endDate: "2024-01-31",
         notes: "Monthly electricity consumption"
       },
       {
         componentType: "diesel",
-        emissionScope: "scope-1", 
+        scope: "scope-1", 
         quantity: 500,
-        unit: "liters",
         emissionFactor: 2.7,
         calorificValue: 1,
-        cost: 45000,
+        costInr: 45000,
         date: "2024-01-20",
+        startDate: "2024-01-15",
+        endDate: "2024-01-25",
         notes: "Generator fuel consumption"
       },
       {
         componentType: "natural-gas",
-        emissionScope: "scope-1",
+        scope: "scope-1",
         quantity: 200,
-        unit: "cubic meters",
         emissionFactor: 2.0,
         calorificValue: 1,
-        cost: 15000,
+        costInr: 15000,
         date: "2024-01-25",
+        startDate: "2024-01-20",
+        endDate: "2024-01-30",
         notes: "Heating and cooking gas"
       },
       {
         componentType: "coal",
-        emissionScope: "scope-1",
+        scope: "scope-1",
         quantity: 1000,
-        unit: "kg",
         emissionFactor: 2.4,
         calorificValue: 1,
-        cost: 25000,
+        costInr: 25000,
         date: "2024-02-01",
+        startDate: "2024-01-25",
+        endDate: "2024-02-05",
         notes: "Boiler fuel consumption"
       }
     ];

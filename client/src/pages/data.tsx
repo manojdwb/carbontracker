@@ -56,10 +56,10 @@ export default function Data() {
             <DataEntryForm />
           </div>
           
-          {/* Activity Log Section */}
+          {/* Emissions Data Section */}
           <Card>
             <CardHeader>
-              <CardTitle>Activity Log</CardTitle>
+              <CardTitle>Emissions Data</CardTitle>
               <div className="flex space-x-2">
                 <Button
                   variant={activeTab === "companywide" ? "default" : "outline"}

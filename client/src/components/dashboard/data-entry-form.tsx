@@ -26,6 +26,8 @@ export default function DataEntryForm() {
       scope: "scope-1",
       quantity: 0,
       date: new Date().toISOString().split('T')[0],
+      startDate: new Date().toISOString().split('T')[0],
+      endDate: new Date().toISOString().split('T')[0],
       calorificValue: 0,
       emissionFactor: 0,
       density: 0,
@@ -139,6 +141,34 @@ export default function DataEntryForm() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Date</FormLabel>
+                    <FormControl>
+                      <Input type="date" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="startDate"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Start Date</FormLabel>
+                    <FormControl>
+                      <Input type="date" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="endDate"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>End Date</FormLabel>
                     <FormControl>
                       <Input type="date" {...field} />
                     </FormControl>
@@ -289,14 +319,6 @@ export default function DataEntryForm() {
                 Calculated CO2: <span className="font-semibold">{formatCO2(calculatedCO2)}</span>
               </div>
               <div className="flex items-center space-x-3">
-                <Button 
-                  type="button" 
-                  variant="outline" 
-                  className="bg-yellow-50 border-yellow-200 text-yellow-800 hover:bg-yellow-100"
-                >
-                  <i className="fas fa-clock mr-2"></i>
-                  Approval Pending
-                </Button>
                 <Button type="submit" disabled={mutation.isPending}>
                   <i className="fas fa-save mr-2"></i>
                   {mutation.isPending ? "Saving..." : "Save Entry"}
