@@ -1,10 +1,20 @@
 import express, { type Request, Response, NextFunction } from "express";
+import path from "path";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// Serve attached assets (PDFs, images) with proper MIME types
+app.use('/attached_assets', express.static(path.join(process.cwd(), 'attached_assets'), {
+  setHeaders: (res, path) => {
+    if (path.endsWith('.pdf')) {
+      res.setHeader('Content-Type', 'application/pdf');
+    }
+  }
+}));
 
 app.use((req, res, next) => {
   const start = Date.now();

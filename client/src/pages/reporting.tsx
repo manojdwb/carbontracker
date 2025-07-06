@@ -45,7 +45,12 @@ export default function Reporting() {
   ];
 
   const handleReportClick = (reportType: string) => {
-    navigate(`/report-viewer?type=${reportType}`);
+    if (reportType === 'brsr') {
+      // For BRSR, directly open the PDF in a new tab
+      window.open('/attached_assets/Business responsibility and sustainability reporting by listed entitiesAnnexure1_p_1751810445793.pdf', '_blank');
+    } else {
+      navigate(`/report-viewer?type=${reportType}`);
+    }
   };
 
   return (
