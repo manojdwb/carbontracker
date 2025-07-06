@@ -11,6 +11,7 @@ import Reporting from "@/pages/reporting";
 import SupplierAssessment from "@/pages/supplier-assessment";
 import ImprovementPlan from "@/pages/improvement-plan";
 import MarketAnalysis from "@/pages/market-analysis";
+import ReportViewer from "@/pages/report-viewer";
 import Sidebar from "@/components/layout/sidebar";
 
 function Router() {
@@ -26,6 +27,7 @@ function Router() {
           <Route path="/supplier-assessment" component={SupplierAssessment} />
           <Route path="/improvement-plan" component={ImprovementPlan} />
           <Route path="/market-analysis" component={MarketAnalysis} />
+          <Route path="/report-viewer" component={ReportViewer} />
           <Route component={NotFound} />
         </Switch>
       </div>
