@@ -2,6 +2,39 @@ import Header from "@/components/layout/header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function Reporting() {
+  const reports = [
+    {
+      title: "BRSR Report",
+      description: "Business Responsibility and Sustainability Reporting",
+      icon: "fas fa-file-alt"
+    },
+    {
+      title: "CSRD Report", 
+      description: "Corporate Sustainability Reporting Directive",
+      icon: "fas fa-file-alt"
+    },
+    {
+      title: "Ecovadis Reporting KPIs",
+      description: "EcoVadis sustainability assessment metrics",
+      icon: "fas fa-file-alt"
+    },
+    {
+      title: "S&P Global KPIs",
+      description: "S&P Global sustainability indicators",
+      icon: "fas fa-file-alt"
+    },
+    {
+      title: "Custom Report",
+      description: "Build your own custom sustainability report",
+      icon: "fas fa-file-alt"
+    },
+    {
+      title: "Consolidated Supplier Report",
+      description: "Comprehensive supplier sustainability assessment",
+      icon: "fas fa-file-alt"
+    }
+  ];
+
   return (
     <>
       <Header
@@ -11,21 +44,25 @@ export default function Reporting() {
       
       <main className="flex-1 overflow-auto p-6">
         <div className="max-w-7xl mx-auto">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <i className="fas fa-file-alt mr-3 text-primary"></i>
-                ESG Reporting
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-center py-12 text-muted-foreground">
-                <i className="fas fa-file-chart-column text-6xl mb-4 block"></i>
-                <h3 className="text-xl font-semibold mb-2">Reporting Module</h3>
-                <p>Generate comprehensive ESG reports and compliance documentation.</p>
-              </div>
-            </CardContent>
-          </Card>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {reports.map((report, index) => (
+              <Card key={index} className="hover:shadow-lg transition-shadow cursor-pointer group">
+                <CardContent className="p-8 text-center">
+                  <div className="mb-6">
+                    <div className="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors">
+                      <i className={`${report.icon} text-2xl text-primary`}></i>
+                    </div>
+                    <h3 className="text-lg font-semibold mb-2 group-hover:text-primary transition-colors">
+                      {report.title}
+                    </h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      {report.description}
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
       </main>
     </>

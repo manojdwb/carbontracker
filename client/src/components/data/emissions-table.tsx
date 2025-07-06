@@ -138,7 +138,7 @@ export default function EmissionsTable() {
                     <TableHead>Emission Factor</TableHead>
                     <TableHead>Cost (INR)</TableHead>
                     <TableHead>CO2 Emissions</TableHead>
-                    <TableHead>Actions</TableHead>
+                    <TableHead>Status</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -167,20 +167,13 @@ export default function EmissionsTable() {
                       </TableCell>
                       <TableCell className="font-semibold">{formatCO2(Number(entry.co2Emissions))}</TableCell>
                       <TableCell>
-                        <div className="flex items-center space-x-2">
-                          <Button variant="ghost" size="sm" className="text-primary hover:text-primary-dark">
-                            <i className="fas fa-edit"></i>
-                          </Button>
-                          <Button 
-                            variant="ghost" 
-                            size="sm" 
-                            className="text-muted-foreground hover:text-destructive"
-                            onClick={() => handleDelete(entry.id)}
-                            disabled={deleteMutation.isPending}
-                          >
-                            <i className="fas fa-trash"></i>
-                          </Button>
-                        </div>
+                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                          entry.id % 2 === 0 
+                            ? 'bg-yellow-100 text-yellow-800' 
+                            : 'bg-green-100 text-green-800'
+                        }`}>
+                          {entry.id % 2 === 0 ? 'Approval Pending' : 'Approved'}
+                        </span>
                       </TableCell>
                     </TableRow>
                   ))}

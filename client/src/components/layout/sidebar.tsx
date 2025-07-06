@@ -6,6 +6,7 @@ const navigation = [
   { name: "Data", href: "/data", icon: "fas fa-database" },
   { name: "Analytics", href: "/analytics", icon: "fas fa-chart-bar" },
   { name: "Reporting", href: "/reporting", icon: "fas fa-file-alt" },
+  { name: "Market Analysis", href: "/market-analysis", icon: "fas fa-lock" },
   { name: "Supplier Assessment", href: "/supplier-assessment", icon: "fas fa-handshake" },
   { name: "Improvement Plan", href: "/improvement-plan", icon: "fas fa-bullseye" },
 ];
