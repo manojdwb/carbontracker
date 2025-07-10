@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Header from "@/components/layout/header";
+import MainLayout from "@/components/layout/main-layout";
 import DataEntryForm from "@/components/dashboard/data-entry-form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -121,7 +122,7 @@ export default function Data() {
   };
 
   return (
-    <>
+    <MainLayout>
       <Header
         title="Emission Data"
         subtitle="Manage and view all emission entries"
@@ -639,6 +640,6 @@ export default function Data() {
           </div>
         </DialogContent>
       </Dialog>
-    </>
+    </MainLayout>
   );
 }

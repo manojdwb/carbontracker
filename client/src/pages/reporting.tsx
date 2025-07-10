@@ -1,5 +1,6 @@
 import { useLocation } from "wouter";
 import Header from "@/components/layout/header";
+import MainLayout from "@/components/layout/main-layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function Reporting() {
@@ -54,7 +55,7 @@ export default function Reporting() {
   };
 
   return (
-    <>
+    <MainLayout>
       <Header
         title="Reporting"
         subtitle="Generate compliance and ESG reports"
@@ -87,6 +88,6 @@ export default function Reporting() {
           </div>
         </div>
       </main>
-    </>
+    </MainLayout>
   );
 }

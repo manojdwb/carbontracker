@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Header from "@/components/layout/header";
+import MainLayout from "@/components/layout/main-layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
@@ -66,7 +67,7 @@ export default function Analytics() {
   ];
 
   return (
-    <>
+    <MainLayout>
       <Header
         title="Analytics"
         subtitle="Emission analytics and insights"
@@ -450,6 +451,6 @@ export default function Analytics() {
           )}
         </div>
       </main>
-    </>
+    </MainLayout>
   );
 }

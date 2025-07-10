@@ -1,10 +1,11 @@
 import { User } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import MainLayout from "@/components/layout/main-layout";
 
 export default function AccountDetails() {
   return (
-    <div className="min-h-screen bg-gray-50">
-      <main className="flex-1 overflow-auto p-6">
+    <MainLayout>
+      <main className="flex-1 overflow-auto p-6 bg-gray-50">
         <div className="max-w-2xl mx-auto space-y-6">
           {/* Profile Header */}
           <div className="text-center space-y-4">
@@ -50,6 +51,6 @@ export default function AccountDetails() {
           </Card>
         </div>
       </main>
-    </div>
+    </MainLayout>
   );
 }

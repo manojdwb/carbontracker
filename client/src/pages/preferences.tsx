@@ -1,11 +1,12 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
+import MainLayout from "@/components/layout/main-layout";
 
 export default function Preferences() {
   return (
-    <div className="min-h-screen bg-gray-50">
-      <main className="flex-1 overflow-auto p-6">
+    <MainLayout>
+      <main className="flex-1 overflow-auto p-6 bg-gray-50">
         <div className="max-w-6xl mx-auto space-y-6">
           <Card>
             <CardHeader>
@@ -122,6 +123,6 @@ export default function Preferences() {
           </Card>
         </div>
       </main>
-    </div>
+    </MainLayout>
   );
 }

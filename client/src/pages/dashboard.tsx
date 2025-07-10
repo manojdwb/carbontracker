@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from "recharts";
 import { Building2 } from "lucide-react";
-import TopMenu from "@/components/layout/top-menu";
+import MainLayout from "@/components/layout/main-layout";
 
 export default function Dashboard() {
   const { data: emissions = [] } = useQuery({
@@ -71,8 +71,7 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="flex-1 flex flex-col overflow-hidden">
-      <TopMenu />
+    <MainLayout>
       <main className="flex-1 overflow-auto p-6">
         <div className="max-w-7xl mx-auto space-y-6">
           {/* Company Header */}
@@ -146,8 +145,39 @@ export default function Dashboard() {
             </Card>
           </div>
 
+          {/* Tasks Section */}
+          <Card className="mt-8">
+            <CardHeader>
+              <CardTitle className="text-lg font-medium">Tasks</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader className="bg-gray-100">
+                  <TableRow>
+                    <TableHead className="font-semibold">Plant Name</TableHead>
+                    <TableHead className="font-semibold">Profit Center</TableHead>
+                    <TableHead className="font-semibold">Operation Site</TableHead>
+                    <TableHead className="font-semibold">Business Center</TableHead>
+                    <TableHead className="font-semibold">Task</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {tasks.map((task, index) => (
+                    <TableRow key={index}>
+                      <TableCell>{task.plantName}</TableCell>
+                      <TableCell>{task.profitCenter}</TableCell>
+                      <TableCell>{task.operationSite}</TableCell>
+                      <TableCell>{task.businessCenter}</TableCell>
+                      <TableCell>{task.task}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+
           {/* Reports and News Section */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
             {/* Reports Card */}
             <Card>
               <CardHeader>
@@ -183,39 +213,8 @@ export default function Dashboard() {
               </CardContent>
             </Card>
           </div>
-
-          {/* Tasks Section */}
-          <Card className="mt-8">
-            <CardHeader>
-              <CardTitle className="text-lg font-medium">Tasks</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader className="bg-gray-100">
-                  <TableRow>
-                    <TableHead className="font-semibold">Plant Name</TableHead>
-                    <TableHead className="font-semibold">Profit Center</TableHead>
-                    <TableHead className="font-semibold">Operation Site</TableHead>
-                    <TableHead className="font-semibold">Business Center</TableHead>
-                    <TableHead className="font-semibold">Task</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {tasks.map((task, index) => (
-                    <TableRow key={index}>
-                      <TableCell>{task.plantName}</TableCell>
-                      <TableCell>{task.profitCenter}</TableCell>
-                      <TableCell>{task.operationSite}</TableCell>
-                      <TableCell>{task.businessCenter}</TableCell>
-                      <TableCell>{task.task}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
         </div>
       </main>
-    </div>
+    </MainLayout>
   );
 }
