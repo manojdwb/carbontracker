@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Header from "@/components/layout/header";
+import MainLayout from "@/components/layout/main-layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -49,7 +50,7 @@ export default function SupplierAssessment() {
   };
 
   return (
-    <>
+    <MainLayout>
       <Header
         title="Supplier Assessment"
         subtitle="Evaluate supplier environmental performance"
@@ -410,6 +411,6 @@ export default function SupplierAssessment() {
           </form>
         </div>
       </main>
-    </>
+    </MainLayout>
   );
 }

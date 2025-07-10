@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { useLocation } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from "recharts";
@@ -6,6 +7,8 @@ import { Building2 } from "lucide-react";
 import MainLayout from "@/components/layout/main-layout";
 
 export default function Dashboard() {
+  const [, navigate] = useLocation();
+  
   const { data: emissions = [] } = useQuery({
     queryKey: ['/api/emissions'],
   });
@@ -163,12 +166,12 @@ export default function Dashboard() {
                 </TableHeader>
                 <TableBody>
                   {tasks.map((task, index) => (
-                    <TableRow key={index}>
+                    <TableRow key={index} className="cursor-pointer hover:bg-gray-50" onClick={() => navigate('/data')}>
                       <TableCell>{task.plantName}</TableCell>
                       <TableCell>{task.profitCenter}</TableCell>
                       <TableCell>{task.operationSite}</TableCell>
                       <TableCell>{task.businessCenter}</TableCell>
-                      <TableCell>{task.task}</TableCell>
+                      <TableCell className="text-red-600 hover:text-red-800">{task.task}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

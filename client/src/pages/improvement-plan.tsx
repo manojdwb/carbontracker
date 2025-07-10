@@ -1,9 +1,10 @@
 import Header from "@/components/layout/header";
+import MainLayout from "@/components/layout/main-layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function ImprovementPlan() {
   return (
-    <>
+    <MainLayout>
       <Header
         title="Improvement Plan"
         subtitle="Develop strategies to reduce emissions"
@@ -28,6 +29,6 @@ export default function ImprovementPlan() {
           </Card>
         </div>
       </main>
-    </>
+    </MainLayout>
   );
 }

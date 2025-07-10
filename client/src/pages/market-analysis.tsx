@@ -1,4 +1,5 @@
 import Header from "@/components/layout/header";
+import MainLayout from "@/components/layout/main-layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,7 +22,7 @@ export default function MarketAnalysis() {
   ];
 
   return (
-    <>
+    <MainLayout>
       <Header
         title="Market Analysis"
         subtitle="Add upto 5 Companies"
@@ -79,6 +80,6 @@ export default function MarketAnalysis() {
           </Card>
         </div>
       </main>
-    </>
+    </MainLayout>
   );
 }

@@ -67,7 +67,11 @@ export default function TopMenu() {
               <DropdownMenuLabel>Notifications</DropdownMenuLabel>
               <DropdownMenuSeparator />
               {notifications.map((notification) => (
-                <DropdownMenuItem key={notification.id} className="py-3">
+                <DropdownMenuItem 
+                  key={notification.id} 
+                  className="py-3 cursor-pointer"
+                  onClick={() => navigate('/data')}
+                >
                   <div className="flex items-start space-x-3">
                     <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
                     <div className="flex-1">
