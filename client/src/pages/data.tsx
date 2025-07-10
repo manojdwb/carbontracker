@@ -42,12 +42,8 @@ export default function Data() {
   return (
     <>
       <Header
-        title="Emissions Data"
+        title="Emission Data"
         subtitle="Manage and view all emission entries"
-        onExport={handleExport}
-        onAddEntry={handleAddEntry}
-        onDownloadTemplate={handleDownloadTemplate}
-        onBulkUpload={handleBulkUpload}
       />
       
       <main className="flex-1 overflow-auto p-6">
@@ -56,10 +52,10 @@ export default function Data() {
             <DataEntryForm />
           </div>
           
-          {/* Emissions Data Section */}
+          {/* Data Log Section */}
           <Card>
             <CardHeader>
-              <CardTitle>Emissions Data</CardTitle>
+              <CardTitle>Data Log</CardTitle>
               <div className="flex space-x-2">
                 <Button
                   variant={activeTab === "companywide" ? "default" : "outline"}
@@ -73,7 +69,7 @@ export default function Data() {
                   onClick={() => setActiveTab("projectwise")}
                   className="px-6"
                 >
-                  Project Wise
+                  Plant Wise
                 </Button>
               </div>
             </CardHeader>
@@ -82,61 +78,125 @@ export default function Data() {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Project Name</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Owner</TableHead>
+                      <TableHead>No.</TableHead>
+                      <TableHead>Date</TableHead>
+                      <TableHead>Plant Name</TableHead>
+                      <TableHead>Profit Center</TableHead>
+                      <TableHead>Operation Site</TableHead>
+                      <TableHead>Business Center</TableHead>
+                      <TableHead>Completion Status</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {companywideProjects.map((project, index) => (
-                      <TableRow key={index}>
-                        <TableCell className="font-medium">{project.name}</TableCell>
-                        <TableCell>
-                          <div className="space-y-2">
-                            <div className="text-sm text-muted-foreground">{project.status}</div>
-                            <div className="w-32 bg-gray-200 rounded-full h-2">
-                              <div 
-                                className="bg-blue-600 h-2 rounded-full" 
-                                style={{ width: `${project.progress}%` }}
-                              ></div>
-                            </div>
-                          </div>
-                        </TableCell>
-                        <TableCell>{project.owner}</TableCell>
-                      </TableRow>
-                    ))}
+                    <TableRow>
+                      <TableCell>1</TableCell>
+                      <TableCell>25-4-2025</TableCell>
+                      <TableCell>Mumbai</TableCell>
+                      <TableCell>Maharashtra</TableCell>
+                      <TableCell>West</TableCell>
+                      <TableCell>India</TableCell>
+                      <TableCell>80/110 forms filled</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>2</TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>3</TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                    </TableRow>
                   </TableBody>
                 </Table>
               ) : (
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Project Name</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Uploaded by</TableHead>
-                      <TableHead>Checked by</TableHead>
-                      <TableHead>Approved by</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {projectWiseData.map((project, index) => (
-                      <TableRow key={index}>
-                        <TableCell className="font-medium">{project.name}</TableCell>
-                        <TableCell>
-                          <span className="text-sm text-muted-foreground">{project.status}</span>
-                        </TableCell>
-                        <TableCell>{project.uploadedBy}</TableCell>
-                        <TableCell>{project.checkedBy}</TableCell>
-                        <TableCell>{project.approvedBy}</TableCell>
+                <div className="relative">
+                  <div className="flex justify-end mb-4">
+                    <Button variant="outline" size="sm" className="flex items-center space-x-2">
+                      <span>Filter</span>
+                      <i className="fas fa-filter"></i>
+                    </Button>
+                  </div>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>No.</TableHead>
+                        <TableHead>Date</TableHead>
+                        <TableHead>Component Name</TableHead>
+                        <TableHead>Plant Name</TableHead>
+                        <TableHead>Profit Center</TableHead>
+                        <TableHead>Operation Site</TableHead>
+                        <TableHead>Business Center</TableHead>
+                        <TableHead>Completion Status</TableHead>
+                        <TableHead>Data Owner</TableHead>
+                        <TableHead>Data Verifier</TableHead>
+                        <TableHead>Data Approver</TableHead>
+                        <TableHead>Data Assurer</TableHead>
+                        <TableHead>Data Audited YES/NO</TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                    </TableHeader>
+                    <TableBody>
+                      <TableRow>
+                        <TableCell>1</TableCell>
+                        <TableCell>24-4-2025</TableCell>
+                        <TableCell>Coal</TableCell>
+                        <TableCell>Mumbai</TableCell>
+                        <TableCell>Maharashtra</TableCell>
+                        <TableCell>West</TableCell>
+                        <TableCell>India</TableCell>
+                        <TableCell>100%</TableCell>
+                        <TableCell className="text-green-600">Pooja</TableCell>
+                        <TableCell className="text-green-600">Arun</TableCell>
+                        <TableCell className="text-green-600">Priya</TableCell>
+                        <TableCell className="text-green-600">Narendra</TableCell>
+                        <TableCell className="text-green-600">Yes</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>2</TableCell>
+                        <TableCell>20-4-2025</TableCell>
+                        <TableCell>Natural Gas</TableCell>
+                        <TableCell>Dahej</TableCell>
+                        <TableCell>Gujarat</TableCell>
+                        <TableCell>West</TableCell>
+                        <TableCell>India</TableCell>
+                        <TableCell>50%</TableCell>
+                        <TableCell className="text-green-600">Pooja</TableCell>
+                        <TableCell className="text-green-600">Arun</TableCell>
+                        <TableCell className="text-red-600">Priya</TableCell>
+                        <TableCell className="text-red-600">Narendra</TableCell>
+                        <TableCell className="text-red-600">No</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>3</TableCell>
+                        <TableCell></TableCell>
+                        <TableCell></TableCell>
+                        <TableCell></TableCell>
+                        <TableCell></TableCell>
+                        <TableCell></TableCell>
+                        <TableCell></TableCell>
+                        <TableCell></TableCell>
+                        <TableCell></TableCell>
+                        <TableCell></TableCell>
+                        <TableCell></TableCell>
+                        <TableCell></TableCell>
+                        <TableCell></TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </div>
               )}
             </CardContent>
           </Card>
 
-          <EmissionsTable />
+
         </div>
       </main>
     </>

@@ -451,7 +451,7 @@ export default function DataEntryForm() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <Label className="text-sm font-medium">Calculated Emissions in tCO2</Label>
-                <div className="mt-2 p-4 bg-muted rounded-lg border">
+                <div className="mt-2 p-4 bg-muted rounded-lg border min-h-[100px] flex items-center">
                   <span className="text-lg font-semibold text-muted-foreground">
                     {calculatedCO2.toFixed(2)} tCO2
                   </span>
