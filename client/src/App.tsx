@@ -12,6 +12,8 @@ import SupplierAssessment from "@/pages/supplier-assessment";
 import ImprovementPlan from "@/pages/improvement-plan";
 import MarketAnalysis from "@/pages/market-analysis";
 import ReportViewer from "@/pages/report-viewer";
+import AccountDetails from "@/pages/account-details";
+import Preferences from "@/pages/preferences";
 import Sidebar from "@/components/layout/sidebar";
 
 function Router() {
@@ -28,6 +30,8 @@ function Router() {
           <Route path="/improvement-plan" component={ImprovementPlan} />
           <Route path="/market-analysis" component={MarketAnalysis} />
           <Route path="/report-viewer" component={ReportViewer} />
+          <Route path="/account-details" component={AccountDetails} />
+          <Route path="/preferences" component={Preferences} />
           <Route component={NotFound} />
         </Switch>
       </div>
