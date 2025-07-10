@@ -10,18 +10,29 @@ export const users = pgTable("users", {
 
 export const emissionEntries = pgTable("emission_entries", {
   id: serial("id").primaryKey(),
-  componentType: text("component_type").notNull(),
+  businessCenter: text("business_center").notNull(),
+  operationSite: text("operation_site").notNull(), 
+  profitCenter: text("profit_center").notNull(),
+  plantName: text("plant_name").notNull(),
+  componentName: text("component_name").notNull(),
+  dateOfEntry: text("date_of_entry").notNull(),
   scope: text("scope").notNull(),
-  quantity: decimal("quantity", { precision: 12, scale: 4 }).notNull(),
-  date: text("date").notNull(),
   startDate: text("start_date").notNull(),
   endDate: text("end_date").notNull(),
-  calorificValue: decimal("calorific_value", { precision: 12, scale: 4 }),
-  emissionFactor: decimal("emission_factor", { precision: 12, scale: 6 }).notNull(),
-  density: decimal("density", { precision: 12, scale: 4 }),
+  quantity: decimal("quantity", { precision: 12, scale: 4 }).notNull(),
   costInr: decimal("cost_inr", { precision: 12, scale: 2 }),
-  notes: text("notes"),
+  vendorName: text("vendor_name").notNull(),
+  emissionFactor: decimal("emission_factor", { precision: 12, scale: 6 }).notNull(),
+  calorificValue: decimal("calorific_value", { precision: 12, scale: 4 }),
+  density: decimal("density", { precision: 12, scale: 4 }),
   co2Emissions: decimal("co2_emissions", { precision: 12, scale: 6 }).notNull(),
+  remarks: text("remarks"),
+  completionStatus: text("completion_status").notNull().default("Pending"),
+  dataOwner: text("data_owner"),
+  dataVerifier: text("data_verifier"), 
+  dataApprover: text("data_approver"),
+  dataAssurer: text("data_assurer"),
+  dataAudited: text("data_audited"),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
@@ -35,20 +46,32 @@ export const insertEmissionEntrySchema = createInsertSchema(emissionEntries).omi
   co2Emissions: true,
   createdAt: true,
 }).extend({
-  quantity: z.coerce.number().positive("Quantity must be positive"),
-  calorificValue: z.coerce.number().positive().optional(),
-  emissionFactor: z.coerce.number().positive("Emission factor must be positive"),
-  density: z.coerce.number().positive().optional(),
-  costInr: z.coerce.number().positive().optional(),
-  date: z.string().min(1, "Date is required"),
-  startDate: z.string().min(1, "Start date is required"),
-  endDate: z.string().min(1, "End date is required"),
-  componentType: z.enum(["coal", "diesel", "natural-gas", "electricity"], {
-    errorMap: () => ({ message: "Please select a valid component type" })
+  businessCenter: z.string().min(1, "Business Center is required"),
+  operationSite: z.string().min(1, "Operation Site is required"),
+  profitCenter: z.string().min(1, "Profit Center is required"),
+  plantName: z.string().min(1, "Plant Name is required"),
+  componentName: z.enum(["coal", "diesel", "natural-gas", "electricity"], {
+    errorMap: () => ({ message: "Please select a valid component" })
   }),
+  dateOfEntry: z.string().min(1, "Date of Entry is required"),
   scope: z.enum(["scope-1", "scope-2", "scope-3"], {
     errorMap: () => ({ message: "Please select a valid emission scope" })
   }),
+  startDate: z.string().min(1, "Start date is required"),
+  endDate: z.string().min(1, "End date is required"),
+  quantity: z.coerce.number().positive("Quantity must be positive"),
+  costInr: z.coerce.number().positive().optional(),
+  vendorName: z.string().min(1, "Vendor Name is required"),
+  emissionFactor: z.coerce.number().positive("Emission factor must be positive"),
+  calorificValue: z.coerce.number().positive().optional(),
+  density: z.coerce.number().positive().optional(),
+  remarks: z.string().optional(),
+  completionStatus: z.string().optional(),
+  dataOwner: z.string().optional(),
+  dataVerifier: z.string().optional(),
+  dataApprover: z.string().optional(),
+  dataAssurer: z.string().optional(),
+  dataAudited: z.string().optional(),
 });
 
 export type InsertUser = z.infer<typeof insertUserSchema>;

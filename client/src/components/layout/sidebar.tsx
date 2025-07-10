@@ -60,8 +60,8 @@ export default function Sidebar() {
             <i className="fas fa-user text-sm"></i>
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium">Sarah Johnson</p>
-            <p className="text-xs text-gray-400">ESG Manager</p>
+            <p className="text-sm font-medium">Harsh Yadav</p>
+            <p className="text-xs text-gray-400">Senior Manager, Sustainability</p>
           </div>
         </div>
       </div>

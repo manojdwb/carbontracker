@@ -39,7 +39,7 @@ export default function Header({ title, subtitle, onExport, onAddEntry, onDownlo
           {onAddEntry && (
             <Button onClick={onAddEntry}>
               <i className="fas fa-plus mr-2"></i>
-              Add Entry
+              Add New Entry
             </Button>
           )}
         </div>

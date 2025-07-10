@@ -22,17 +22,23 @@ export default function DataEntryForm() {
   const form = useForm<InsertEmissionEntry>({
     resolver: zodResolver(insertEmissionEntrySchema),
     defaultValues: {
-      componentType: "coal",
+      businessCenter: "",
+      operationSite: "",
+      profitCenter: "",
+      plantName: "",
+      componentName: "coal",
+      dateOfEntry: new Date().toISOString().split('T')[0],
       scope: "scope-1",
-      quantity: 0,
-      date: new Date().toISOString().split('T')[0],
       startDate: new Date().toISOString().split('T')[0],
       endDate: new Date().toISOString().split('T')[0],
-      calorificValue: 0,
-      emissionFactor: 0,
-      density: 0,
+      quantity: 0,
       costInr: 0,
-      notes: "",
+      vendorName: "",
+      emissionFactor: 0,
+      calorificValue: 0,
+      density: 0,
+      remarks: "",
+      completionStatus: "Pending",
     },
   });
 
@@ -80,24 +86,124 @@ export default function DataEntryForm() {
     <Card className="bg-card shadow-sm border border-border">
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
-          <span>Add Emission Entry</span>
+          <span>Add New Entry</span>
           <i className="fas fa-plus-circle text-primary"></i>
         </CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            {/* First Row */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <FormField
                 control={form.control}
-                name="componentType"
+                name="businessCenter"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Component Type</FormLabel>
+                    <FormLabel>Business Center</FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select component" />
+                          <SelectValue placeholder="Select Business Center" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="india">India</SelectItem>
+                        <SelectItem value="mumbai">Mumbai</SelectItem>
+                        <SelectItem value="delhi">Delhi</SelectItem>
+                        <SelectItem value="bangalore">Bangalore</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="operationSite"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Operation Site</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Business Center" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="west">West</SelectItem>
+                        <SelectItem value="east">East</SelectItem>
+                        <SelectItem value="north">North</SelectItem>
+                        <SelectItem value="south">South</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="profitCenter"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Profit Center</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Profit Center" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="maharashtra">Maharashtra</SelectItem>
+                        <SelectItem value="gujarat">Gujarat</SelectItem>
+                        <SelectItem value="rajasthan">Rajasthan</SelectItem>
+                        <SelectItem value="karnataka">Karnataka</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            {/* Second Row */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <FormField
+                control={form.control}
+                name="plantName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Plant Name</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Project" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="mumbai">Mumbai</SelectItem>
+                        <SelectItem value="dahej">Dahej</SelectItem>
+                        <SelectItem value="pune">Pune</SelectItem>
+                        <SelectItem value="ahmedabad">Ahmedabad</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="componentName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Component Name</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Coal" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -111,7 +217,24 @@ export default function DataEntryForm() {
                   </FormItem>
                 )}
               />
+              
+              <FormField
+                control={form.control}
+                name="dateOfEntry"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Date of Entry</FormLabel>
+                    <FormControl>
+                      <Input type="date" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
+            {/* Third Row */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <FormField
                 control={form.control}
                 name="scope"
@@ -121,7 +244,7 @@ export default function DataEntryForm() {
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select category" />
+                          <SelectValue placeholder="Scope 1" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -134,21 +257,7 @@ export default function DataEntryForm() {
                   </FormItem>
                 )}
               />
-
-              <FormField
-                control={form.control}
-                name="date"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Date</FormLabel>
-                    <FormControl>
-                      <Input type="date" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
+              
               <FormField
                 control={form.control}
                 name="startDate"
@@ -162,37 +271,7 @@ export default function DataEntryForm() {
                   </FormItem>
                 )}
               />
-
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="quantity"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Quantity</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        step="0.01"
-                        placeholder="Enter quantity"
-                        {...field}
-                        onChange={(e) => {
-                          field.onChange(e.target.value);
-                          const quantity = Number(e.target.value);
-                          const emissionFactor = Number(form.getValues("emissionFactor"));
-                          if (quantity && emissionFactor) {
-                            setCalculatedCO2(calculateCO2(quantity, emissionFactor));
-                          }
-                        }}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
+              
               <FormField
                 control={form.control}
                 name="endDate"
@@ -206,20 +285,68 @@ export default function DataEntryForm() {
                   </FormItem>
                 )}
               />
+            </div>
 
+            {/* Fourth Row */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <FormField
                 control={form.control}
-                name="density"
+                name="quantity"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Density (kg/m³)</FormLabel>
+                    <FormLabel>Quantity</FormLabel>
+                    <div className="flex">
+                      <FormControl>
+                        <Input 
+                          type="number" 
+                          placeholder="Enter Qty" 
+                          {...field}
+                          onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                        />
+                      </FormControl>
+                      <Select defaultValue="metric-tons">
+                        <SelectTrigger className="w-32 ml-2">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="metric-tons">Metric Tons</SelectItem>
+                          <SelectItem value="kg">Kilogram</SelectItem>
+                          <SelectItem value="liters">Liters</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="costInr"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Cost (INR)</FormLabel>
                     <FormControl>
-                      <Input
-                        type="number"
-                        step="0.01"
-                        placeholder="Enter density"
+                      <Input 
+                        type="number" 
+                        placeholder="Enter Cost" 
                         {...field}
+                        onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
                       />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="vendorName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Vendor's Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter Vendor's Name" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -227,46 +354,121 @@ export default function DataEntryForm() {
               />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="calorificValue"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Calorific Value (MJ/kg)</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        step="0.01"
-                        placeholder="Enter calorific value"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
+            {/* Fifth Row */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <FormField
                 control={form.control}
                 name="emissionFactor"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Emission Factor (kgCO2/unit)</FormLabel>
+                    <FormLabel>Emission Factor</FormLabel>
+                    <div className="flex">
+                      <FormControl>
+                        <Input 
+                          type="number" 
+                          placeholder="Default Emission Factor" 
+                          {...field}
+                          onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                        />
+                      </FormControl>
+                      <Select defaultValue="terajoule-co2">
+                        <SelectTrigger className="w-40 ml-2">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="terajoule-co2">TeraJoule/CO₂</SelectItem>
+                          <SelectItem value="kg-co2">kg CO₂/unit</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="calorificValue"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Calorific Value</FormLabel>
+                    <div className="flex">
+                      <FormControl>
+                        <Input 
+                          type="number" 
+                          placeholder="Enter Calorific Value" 
+                          {...field}
+                          onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                        />
+                      </FormControl>
+                      <Select defaultValue="joules-gram">
+                        <SelectTrigger className="w-32 ml-2">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="joules-gram">Joules/gram</SelectItem>
+                          <SelectItem value="mj-kg">MJ/kg</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="density"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Density</FormLabel>
+                    <div className="flex">
+                      <FormControl>
+                        <Input 
+                          type="number" 
+                          placeholder="Enter Density" 
+                          {...field}
+                          onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
+                        />
+                      </FormControl>
+                      <Select defaultValue="kilogram-liter">
+                        <SelectTrigger className="w-32 ml-2">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="kilogram-liter">kilogram/liter</SelectItem>
+                          <SelectItem value="g-ml">g/ml</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            {/* Sixth Row */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label className="text-sm font-medium">Calculated Emissions in tCO2</Label>
+                <div className="mt-2 p-4 bg-muted rounded-lg border">
+                  <span className="text-lg font-semibold text-muted-foreground">
+                    {calculatedCO2.toFixed(2)} tCO2
+                  </span>
+                </div>
+              </div>
+              
+              <FormField
+                control={form.control}
+                name="remarks"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Remarks</FormLabel>
                     <FormControl>
-                      <Input
-                        type="number"
-                        step="0.001"
-                        placeholder="Enter emission factor"
-                        {...field}
-                        onChange={(e) => {
-                          field.onChange(e.target.value);
-                          const emissionFactor = Number(e.target.value);
-                          const quantity = Number(form.getValues("quantity"));
-                          if (quantity && emissionFactor) {
-                            setCalculatedCO2(calculateCO2(quantity, emissionFactor));
-                          }
-                        }}
+                      <Textarea 
+                        placeholder="Enter brief description here"
+                        className="min-h-[100px]"
+                        {...field} 
                       />
                     </FormControl>
                     <FormMessage />
@@ -275,56 +477,40 @@ export default function DataEntryForm() {
               />
             </div>
 
-            <FormField
-              control={form.control}
-              name="costInr"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Cost (INR)</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      step="0.01"
-                      placeholder="Enter cost in Indian Rupees"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="notes"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Notes</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      rows={3}
-                      placeholder="Add any additional notes or context..."
-                      className="resize-none"
-                      {...field}
-                      value={field.value || ""}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <div className="flex items-center justify-between pt-4">
-              <div className="text-sm text-muted-foreground">
-                <i className="fas fa-calculator mr-1"></i>
-                Calculated CO2: <span className="font-semibold">{formatCO2(calculatedCO2)}</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <Button type="submit" disabled={mutation.isPending}>
-                  <i className="fas fa-save mr-2"></i>
-                  {mutation.isPending ? "Saving..." : "Save Entry"}
-                </Button>
-              </div>
+            {/* Action Buttons */}
+            <div className="flex justify-center space-x-4 pt-4">
+              <Button 
+                type="submit" 
+                disabled={mutation.isPending}
+                className="bg-blue-600 hover:bg-blue-700 px-8"
+              >
+                {mutation.isPending ? "Saving..." : "Save"}
+              </Button>
+              
+              <Button 
+                type="button" 
+                variant="outline"
+                onClick={() => form.reset()}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-8"
+              >
+                New Entry
+              </Button>
+              
+              <Button 
+                type="button" 
+                variant="outline"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-8"
+              >
+                Download Template
+              </Button>
+              
+              <Button 
+                type="button" 
+                variant="outline"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-8"
+              >
+                Bulk Upload
+              </Button>
             </div>
           </form>
         </Form>
