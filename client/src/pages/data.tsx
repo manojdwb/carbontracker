@@ -4,11 +4,28 @@ import DataEntryForm from "@/components/dashboard/data-entry-form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Download } from "lucide-react";
 
 export default function Data() {
   const [activeMainTab, setActiveMainTab] = useState("data");
   const [activeDataLogTab, setActiveDataLogTab] = useState("companywide");
   const [currentPage, setCurrentPage] = useState(1);
+  const [showApprovalDialog, setShowApprovalDialog] = useState(false);
+  const [selectedEntry, setSelectedEntry] = useState<any>(null);
+  const [showFilterDialog, setShowFilterDialog] = useState(false);
+  const [filters, setFilters] = useState({
+    component: "",
+    plantName: "",
+    profitCenter: "",
+    operationSite: "",
+    businessCenter: "",
+    audited: ""
+  });
   const totalPages = 3;
 
   // Generate random data for tables
@@ -58,6 +75,51 @@ export default function Data() {
     { no: 20, date: "02-4-2025", component: "Diesel", plant: "Kochi", profit: "Kerala", operation: "South", business: "India", completion: "80%", owner: "Neeta", verifier: "Aman", approver: "Preeti", assurer: "Gopal", audited: "Yes" }
   ];
 
+  const handleRedItemClick = (entry: any) => {
+    setSelectedEntry(entry);
+    setShowApprovalDialog(true);
+  };
+
+  const handleDownloadCompany = () => {
+    // Create CSV content
+    const headers = ["No.", "Date", "Plant Name", "Profit Center", "Operation Site", "Business Center", "Completion Status"];
+    const csvContent = [
+      headers.join(","),
+      ...companywideData.map(row => [
+        row.no, row.date, row.plant, row.profit, row.operation, row.business, `"${row.status}"`
+      ].join(","))
+    ].join("\n");
+    
+    // Download file
+    const blob = new Blob([csvContent], { type: "text/csv" });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "company_data.csv";
+    a.click();
+    window.URL.revokeObjectURL(url);
+  };
+
+  const handleDownloadPlant = () => {
+    // Create CSV content
+    const headers = ["No.", "Date", "Component Name", "Plant Name", "Profit Center", "Operation Site", "Business Center", "Completion Status", "Data Owner", "Data Verifier", "Data Approver", "Data Assurer", "Data Audited YES/NO"];
+    const csvContent = [
+      headers.join(","),
+      ...plantWiseData.map(row => [
+        row.no, row.date, row.component, row.plant, row.profit, row.operation, row.business, row.completion, row.owner, row.verifier, row.approver, row.assurer, row.audited
+      ].join(","))
+    ].join("\n");
+    
+    // Download file
+    const blob = new Blob([csvContent], { type: "text/csv" });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "plant_data.csv";
+    a.click();
+    window.URL.revokeObjectURL(url);
+  };
+
   return (
     <>
       <Header
@@ -100,14 +162,14 @@ export default function Data() {
                     onClick={() => setActiveDataLogTab("companywide")}
                     className="px-6"
                   >
-                    Company Wide
+                    Company
                   </Button>
                   <Button
                     variant={activeDataLogTab === "plantwise" ? "default" : "outline"}
                     onClick={() => setActiveDataLogTab("plantwise")}
                     className="px-6"
                   >
-                    Plant Wise
+                    Plant
                   </Button>
                 </div>
               </CardHeader>
@@ -141,8 +203,16 @@ export default function Data() {
                       </TableBody>
                     </Table>
                     
+                    {/* Download Button */}
+                    <div className="flex justify-end mt-4 mb-2">
+                      <Button onClick={handleDownloadCompany} variant="outline" className="flex items-center space-x-2">
+                        <Download size={16} />
+                        <span>Download</span>
+                      </Button>
+                    </div>
+                    
                     {/* Pagination */}
-                    <div className="flex items-center justify-center space-x-4 mt-6">
+                    <div className="flex items-center justify-center space-x-4 mt-2">
                       <Button 
                         variant="outline" 
                         onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
@@ -171,7 +241,12 @@ export default function Data() {
                 ) : (
                   <div className="relative">
                     <div className="flex justify-end mb-4">
-                      <Button variant="outline" size="sm" className="flex items-center space-x-2">
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="flex items-center space-x-2"
+                        onClick={() => setShowFilterDialog(true)}
+                      >
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                           <line x1="4" y1="21" x2="4" y2="14"></line>
                           <line x1="4" y1="10" x2="4" y2="3"></line>
@@ -217,16 +292,39 @@ export default function Data() {
                             <TableCell>{row.completion}</TableCell>
                             <TableCell className={row.completion === "100%" || parseInt(row.completion) >= 70 ? "text-green-600" : "text-orange-600"}>{row.owner}</TableCell>
                             <TableCell className={row.completion === "100%" || parseInt(row.completion) >= 70 ? "text-green-600" : "text-orange-600"}>{row.verifier}</TableCell>
-                            <TableCell className={row.audited === "Yes" ? "text-green-600" : "text-red-600"}>{row.approver}</TableCell>
-                            <TableCell className={row.audited === "Yes" ? "text-green-600" : "text-red-600"}>{row.assurer}</TableCell>
-                            <TableCell className={row.audited === "Yes" ? "text-green-600" : "text-red-600"}>{row.audited}</TableCell>
+                            <TableCell 
+                              className={row.audited === "Yes" ? "text-green-600" : "text-red-600 cursor-pointer hover:underline"}
+                              onClick={() => row.audited === "No" && handleRedItemClick(row)}
+                            >
+                              {row.approver}
+                            </TableCell>
+                            <TableCell 
+                              className={row.audited === "Yes" ? "text-green-600" : "text-red-600 cursor-pointer hover:underline"}
+                              onClick={() => row.audited === "No" && handleRedItemClick(row)}
+                            >
+                              {row.assurer}
+                            </TableCell>
+                            <TableCell 
+                              className={row.audited === "Yes" ? "text-green-600" : "text-red-600 cursor-pointer hover:underline"}
+                              onClick={() => row.audited === "No" && handleRedItemClick(row)}
+                            >
+                              {row.audited}
+                            </TableCell>
                           </TableRow>
                         ))}
                       </TableBody>
                     </Table>
                     
+                    {/* Download Button */}
+                    <div className="flex justify-end mt-4 mb-2">
+                      <Button onClick={handleDownloadPlant} variant="outline" className="flex items-center space-x-2">
+                        <Download size={16} />
+                        <span>Download</span>
+                      </Button>
+                    </div>
+                    
                     {/* Pagination */}
-                    <div className="flex items-center justify-center space-x-4 mt-6">
+                    <div className="flex items-center justify-center space-x-4 mt-2">
                       <Button 
                         variant="outline" 
                         onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
@@ -258,6 +356,289 @@ export default function Data() {
           )}
         </div>
       </main>
+
+      {/* Multi-level Filter Dialog */}
+      <Dialog open={showFilterDialog} onOpenChange={setShowFilterDialog}>
+        <DialogContent className="max-w-6xl">
+          <DialogHeader>
+            <DialogTitle>Filter Options</DialogTitle>
+          </DialogHeader>
+          
+          <div className="grid grid-cols-6 gap-4">
+            {/* Main Filter Menu */}
+            <div className="space-y-2">
+              <h3 className="font-medium">Main Filter Menu</h3>
+              <div className="space-y-2">
+                <Button variant="outline" className="w-full justify-start text-left">Component</Button>
+                <Button variant="outline" className="w-full justify-start text-left">Plant Name</Button>
+                <Button variant="outline" className="w-full justify-start text-left">Profit Center</Button>
+                <Button variant="outline" className="w-full justify-start text-left">Operation Site</Button>
+                <Button variant="outline" className="w-full justify-start text-left">Business Center</Button>
+                <Button variant="outline" className="w-full justify-start text-left">Audited Y/N</Button>
+              </div>
+            </div>
+
+            {/* Component Filter */}
+            <div className="space-y-2">
+              <h3 className="font-medium">Component Filter</h3>
+              <div className="space-y-2">
+                <Button variant="outline" className="w-full justify-start text-left">Coal</Button>
+                <Button variant="outline" className="w-full justify-start text-left">Diesel</Button>
+                <Button variant="outline" className="w-full justify-start text-left">Natural Gas</Button>
+                <Button variant="outline" className="w-full justify-start text-left">Electricity</Button>
+              </div>
+            </div>
+
+            {/* Plant Name Filter */}
+            <div className="space-y-2">
+              <h3 className="font-medium">Plant Name Filter</h3>
+              <div className="space-y-2">
+                <Button variant="outline" className="w-full justify-start text-left">Mumbai</Button>
+                <Button variant="outline" className="w-full justify-start text-left">Dahej</Button>
+                <Button variant="outline" className="w-full justify-start text-left">Surat</Button>
+                <Button variant="outline" className="w-full justify-start text-left">Indore</Button>
+              </div>
+            </div>
+
+            {/* Profit Center Filter */}
+            <div className="space-y-2">
+              <h3 className="font-medium">Profit Center Filter</h3>
+              <div className="space-y-2">
+                <Button variant="outline" className="w-full justify-start text-left">Maharashtra</Button>
+                <Button variant="outline" className="w-full justify-start text-left">Gujarat</Button>
+                <Button variant="outline" className="w-full justify-start text-left">Madhya Pradesh</Button>
+              </div>
+            </div>
+
+            {/* Operation Site Filter */}
+            <div className="space-y-2">
+              <h3 className="font-medium">Operation Site Filter</h3>
+              <div className="space-y-2">
+                <Button variant="outline" className="w-full justify-start text-left">West</Button>
+                <Button variant="outline" className="w-full justify-start text-left">South</Button>
+                <Button variant="outline" className="w-full justify-start text-left">North</Button>
+                <Button variant="outline" className="w-full justify-start text-left">East</Button>
+              </div>
+            </div>
+
+            {/* Audited Y/N Filter */}
+            <div className="space-y-2">
+              <h3 className="font-medium">Audited Y/N Filter</h3>
+              <div className="space-y-2">
+                <Button variant="outline" className="w-full justify-start text-left">Yes</Button>
+                <Button variant="outline" className="w-full justify-start text-left">No</Button>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex justify-end space-x-2 mt-6">
+            <Button variant="outline" onClick={() => setShowFilterDialog(false)}>Cancel</Button>
+            <Button onClick={() => setShowFilterDialog(false)}>Apply Filter</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Approval Dialog */}
+      <Dialog open={showApprovalDialog} onOpenChange={setShowApprovalDialog}>
+        <DialogContent className="max-w-4xl">
+          <DialogHeader>
+            <div className="flex items-center justify-between">
+              <DialogTitle>Entry Number #{selectedEntry?.no || "1890871"}</DialogTitle>
+              <div className="flex items-center space-x-2">
+                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V8z" clipRule="evenodd" />
+                </svg>
+                <span className="text-sm">Bill_Sep2025.pdf</span>
+              </div>
+            </div>
+          </DialogHeader>
+          
+          <div className="grid grid-cols-3 gap-6">
+            <div className="space-y-4">
+              <div>
+                <Label>Business Center</Label>
+                <Select defaultValue="India">
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="India">India</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div>
+                <Label>Plant Name</Label>
+                <Select defaultValue="Mumbai">
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Mumbai">Mumbai</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div>
+                <Label>Emission Category</Label>
+                <Select defaultValue="Scope 1">
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Scope 1">Scope 1</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div>
+                <Label>Quantity</Label>
+                <div className="flex space-x-2">
+                  <Input defaultValue="10" />
+                  <Select defaultValue="Metric Ton">
+                    <SelectTrigger className="w-32">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Metric Ton">Metric Ton</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              
+              <div>
+                <Label>Emission Factor</Label>
+                <div className="flex space-x-2">
+                  <Input defaultValue="94.6" />
+                  <Select defaultValue="tC/GJ">
+                    <SelectTrigger className="w-20">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="tC/GJ">tC/GJ</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              
+              <div>
+                <Label>Calculated Emissions in tCO2</Label>
+                <Input defaultValue="22.7 tCO2" readOnly className="bg-gray-50" />
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <Label>Operation Site</Label>
+                <Select defaultValue="West">
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="West">West</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div>
+                <Label>Component Name</Label>
+                <Select defaultValue="Coal">
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Coal">Coal</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div>
+                <Label>Start Date</Label>
+                <Input type="date" defaultValue="2025-09-01" />
+              </div>
+              
+              <div>
+                <Label>Cost (INR)</Label>
+                <Input defaultValue="68,900" />
+              </div>
+              
+              <div>
+                <Label>Calorific Value</Label>
+                <div className="flex space-x-2">
+                  <Input defaultValue="28.2" />
+                  <Select defaultValue="GJ/tonnes">
+                    <SelectTrigger className="w-24">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="GJ/tonnes">GJ/tonnes</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <Label>Profit Center</Label>
+                <Select defaultValue="Maharashtra">
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Maharashtra">Maharashtra</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div>
+                <Label>Date of Entry</Label>
+                <Input type="date" defaultValue="2025-10-06" />
+              </div>
+              
+              <div>
+                <Label>End Date</Label>
+                <Input type="date" defaultValue="2025-09-30" />
+              </div>
+              
+              <div>
+                <Label>Vendor's Name</Label>
+                <Input defaultValue="Acme Labs" />
+              </div>
+              
+              <div>
+                <Label>Density</Label>
+                <div className="flex space-x-2">
+                  <Input defaultValue="NA" />
+                  <Select defaultValue="kilogram/litre">
+                    <SelectTrigger className="w-32">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="kilogram/litre">kilogram/litre</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-6">
+            <Label>Remarks</Label>
+            <Textarea 
+              defaultValue="Operating Fuel for boilers inside the plant."
+              className="mt-2"
+              rows={3}
+            />
+          </div>
+
+          <div className="flex justify-center mt-6">
+            <Button className="px-8 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700">
+              Approve
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
