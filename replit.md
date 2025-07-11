@@ -119,6 +119,10 @@ Changelog:
   - Enhanced Predictive Analysis with comprehensive KPI dropdown and visualization
   - Implemented three-field menu interface for predictive analysis
   - Added strategies section for emission reduction planning
+  - Restructured Supplier Assessment with tabbed interface:
+    - "Vendor List" tab with ESG scores and category classifications
+    - "Supplier Assessment" tab with the existing multi-step assessment form
+  - Implemented multi-level cascading filter system in Analytics Monitoring section
 ```
 
 ## User Preferences

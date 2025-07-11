@@ -9,9 +9,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Filter } from "lucide-react";
 
 export default function SupplierAssessment() {
   const [currentSection, setCurrentSection] = useState(0);
+  const [activeTab, setActiveTab] = useState("vendor-list");
   
   const { register, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
@@ -33,6 +36,20 @@ export default function SupplierAssessment() {
     "Governance"
   ];
 
+  // Vendor data for the vendor list
+  const vendorData = [
+    { id: 1, name: "ChemNova Industries", sector: "Coal", esgScore: 10, category: "Red" },
+    { id: 2, name: "Vardhan Chemtech", sector: "Diesel", esgScore: 65, category: "Orange" },
+    { id: 3, name: "GreenLeaf Organics", sector: "Diesel", esgScore: 75, category: "Green" },
+    { id: 4, name: "Triveni Chemical Co.", sector: "Coal", esgScore: 80, category: "Green" },
+    { id: 5, name: "Zenith Chemtrade", sector: "Natural Gas", esgScore: 30, category: "Red" },
+    { id: 6, name: "Shakti Petrochem", sector: "Diesel", esgScore: 22, category: "Red" },
+    { id: 7, name: "Sigma Polymers & Chemicals", sector: "Natural Gas", esgScore: 55, category: "Orange" },
+    { id: 8, name: "Narmada ChemCorp", sector: "Coal", esgScore: 65, category: "Orange" },
+    { id: 9, name: "EcoBond Solutions", sector: "Diesel", esgScore: 43, category: "Red" },
+    { id: 10, name: "BluePeak Organics", sector: "Coal", esgScore: 39, category: "Red" }
+  ];
+
   const onSubmit = (data: any) => {
     console.log("Supplier assessment data:", data);
   };
@@ -49,6 +66,15 @@ export default function SupplierAssessment() {
     }
   };
 
+  const getCategoryColor = (category: string) => {
+    switch (category.toLowerCase()) {
+      case "green": return "text-green-600 bg-green-50";
+      case "orange": return "text-orange-600 bg-orange-50";
+      case "red": return "text-red-600 bg-red-50";
+      default: return "text-gray-600 bg-gray-50";
+    }
+  };
+
   return (
     <MainLayout>
       <Header
@@ -57,7 +83,61 @@ export default function SupplierAssessment() {
       />
       
       <main className="flex-1 overflow-auto p-6">
-        <div className="max-w-4xl mx-auto space-y-6">
+        <div className="max-w-6xl mx-auto space-y-6">
+          <Tabs value={activeTab} onValueChange={setActiveTab}>
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="vendor-list">Vendor List</TabsTrigger>
+              <TabsTrigger value="supplier-assessment">Supplier Assessment</TabsTrigger>
+            </TabsList>
+
+            {/* Vendor List Tab */}
+            <TabsContent value="vendor-list">
+              <Card>
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-2xl font-bold">Vendor List</CardTitle>
+                    <Button variant="outline" className="flex items-center gap-2">
+                      <Filter size={16} />
+                      Filter
+                    </Button>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="overflow-x-auto">
+                    <table className="w-full border-collapse">
+                      <thead>
+                        <tr className="bg-gray-100">
+                          <th className="border border-gray-300 px-4 py-3 text-left font-medium">Sl. No.</th>
+                          <th className="border border-gray-300 px-4 py-3 text-left font-medium">Vendor's Name</th>
+                          <th className="border border-gray-300 px-4 py-3 text-left font-medium">Sector</th>
+                          <th className="border border-gray-300 px-4 py-3 text-left font-medium">ESG Score</th>
+                          <th className="border border-gray-300 px-4 py-3 text-left font-medium">Category</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {vendorData.map((vendor) => (
+                          <tr key={vendor.id} className="hover:bg-gray-50">
+                            <td className="border border-gray-300 px-4 py-3 text-sm">{vendor.id}</td>
+                            <td className="border border-gray-300 px-4 py-3 text-sm font-medium">{vendor.name}</td>
+                            <td className="border border-gray-300 px-4 py-3 text-sm">{vendor.sector}</td>
+                            <td className="border border-gray-300 px-4 py-3 text-sm font-medium">{vendor.esgScore}</td>
+                            <td className="border border-gray-300 px-4 py-3">
+                              <span className={`px-3 py-1 rounded-full text-xs font-medium ${getCategoryColor(vendor.category)}`}>
+                                {vendor.category}
+                              </span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            {/* Supplier Assessment Tab */}
+            <TabsContent value="supplier-assessment">
+              <div className="space-y-6">
           {/* Progress indicator */}
           <div className="flex items-center justify-between mb-8">
             {sections.map((section, index) => (
@@ -383,32 +463,35 @@ export default function SupplierAssessment() {
               </Card>
             )}
 
-            {/* Navigation buttons */}
-            <div className="flex justify-between pt-6">
-              <Button 
-                type="button" 
-                variant="outline" 
-                onClick={prevSection}
-                disabled={currentSection === 0}
-              >
-                Previous
-              </Button>
-              
-              {currentSection === sections.length - 1 ? (
-                <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
-                  Submit
-                </Button>
-              ) : (
-                <Button 
-                  type="button" 
-                  onClick={nextSection}
-                  className="bg-blue-600 hover:bg-blue-700"
-                >
-                  Next
-                </Button>
-              )}
-            </div>
-          </form>
+                {/* Navigation buttons */}
+                <div className="flex justify-between pt-6">
+                  <Button 
+                    type="button" 
+                    variant="outline" 
+                    onClick={prevSection}
+                    disabled={currentSection === 0}
+                  >
+                    Previous
+                  </Button>
+                  
+                  {currentSection === sections.length - 1 ? (
+                    <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
+                      Submit
+                    </Button>
+                  ) : (
+                    <Button 
+                      type="button" 
+                      onClick={nextSection}
+                      className="bg-blue-600 hover:bg-blue-700"
+                    >
+                      Next
+                    </Button>
+                  )}
+                </div>
+              </form>
+              </div>
+            </TabsContent>
+          </Tabs>
         </div>
       </main>
     </MainLayout>
