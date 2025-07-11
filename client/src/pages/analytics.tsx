@@ -193,12 +193,20 @@ export default function Analytics() {
       years.push(year);
     }
     
-    return years.map((year, index) => {
-      const progress = index / (years.length - 1);
-      // Current trend starts at 45 and decreases slowly
-      const currentTrend = 45 - (progress * 35); // Goes from 45 to 10
-      // Target trend starts at 45 and decreases faster
-      const targetTrend = 45 - (progress * 45); // Goes from 45 to 0
+    return years.map((year) => {
+      // Target trend: starts at 45 in 2020, reaches 0 at 2030
+      let targetTrend = 0;
+      if (year <= 2030) {
+        const targetProgress = (year - 2020) / (2030 - 2020);
+        targetTrend = 45 - (targetProgress * 45); // Linear decrease from 45 to 0
+      }
+      
+      // Current trend: starts at 45 in 2020, reaches 0 at 2038
+      let currentTrend = 0;
+      if (year <= 2038) {
+        const currentProgress = (year - 2020) / (2038 - 2020);
+        currentTrend = 45 - (currentProgress * 45); // Linear decrease from 45 to 0
+      }
       
       return {
         year: year,
@@ -746,9 +754,9 @@ export default function Analytics() {
                       </Select>
                     </div>
 
-                    {/* Target Reduced to */}
+                    {/* Enter Target Value */}
                     <div className="space-y-2">
-                      <label className="block text-sm font-medium text-gray-700">Target Reduced to</label>
+                      <label className="block text-sm font-medium text-gray-700">Enter Target Value</label>
                       <div className="flex space-x-2">
                         <input
                           type="number"
