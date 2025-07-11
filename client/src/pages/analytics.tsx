@@ -27,7 +27,6 @@ export default function Analytics() {
   const [showEnergyDropdown, setShowEnergyDropdown] = useState(false);
   const [monitoringCategory, setMonitoringCategory] = useState("energy");
   const [monitoringSubCategory, setMonitoringSubCategory] = useState("electricity");
-  const [showMumbaiKPI, setShowMumbaiKPI] = useState(false);
 
   // Fetch emissions data
   const { data: entries = [] } = useQuery<EmissionEntry[]>({
@@ -109,7 +108,7 @@ export default function Analytics() {
 
   const tabs = [
     { id: "category", label: "Emission by Category" },
-    { id: "location", label: "Plants" },
+    { id: "location", label: "Emissions by Location" },
     { id: "monitoring", label: "Monitoring" },
     { id: "predictive", label: "Predictive Analysis" },
     { id: "roadmap", label: "Roadmap & Strategy" }
@@ -174,7 +173,7 @@ export default function Analytics() {
               {/* Location Overview Bar Chart */}
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-lg">Plants (tCO2e)</CardTitle>
+                  <CardTitle className="text-lg">Emissions by Location (tCO2e)</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <ResponsiveContainer width="100%" height={400}>
@@ -197,7 +196,7 @@ export default function Analytics() {
                 {/* Scope 1 Pie Chart */}
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-center text-lg">Scope 1 Emissions by Plants</CardTitle>
+                    <CardTitle className="text-center text-lg">Scope 1 Emissions by Location</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <ResponsiveContainer width="100%" height={300}>
@@ -223,7 +222,7 @@ export default function Analytics() {
                 {/* Scope 2 Pie Chart */}
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-center text-lg">Scope 2 Emissions by Plants</CardTitle>
+                    <CardTitle className="text-center text-lg">Scope 2 Emissions by Location</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <ResponsiveContainer width="100%" height={300}>
@@ -249,7 +248,7 @@ export default function Analytics() {
                 {/* Scope 3 Pie Chart */}
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-center text-lg">Scope 3 Emissions by Plants</CardTitle>
+                    <CardTitle className="text-center text-lg">Scope 3 Emissions by Location</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <ResponsiveContainer width="100%" height={300}>
@@ -659,174 +658,20 @@ export default function Analytics() {
             </div>
           )}
 
-          {/* Plants Tab with Interactive Indian Map */}
+          {/* Other Tabs Placeholder */}
           {activeTab === "location" && (
             <Card>
               <CardHeader>
-                <CardTitle>Plants</CardTitle>
+                <CardTitle>Emissions by Location</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="relative">
-                  {/* Indian Map */}
-                  <div className="w-full h-96 bg-gray-100 border-2 border-gray-300 rounded-lg relative overflow-hidden">
-                    {/* Simplified India outline SVG */}
-                    <svg viewBox="0 0 800 600" className="w-full h-full">
-                      {/* India map outline - simplified version */}
-                      <path
-                        d="M200 100 L600 100 L650 150 L680 200 L650 250 L620 300 L580 350 L520 380 L480 400 L420 420 L380 400 L340 380 L300 360 L260 340 L220 300 L180 250 L160 200 L180 150 L200 100 Z"
-                        fill="#e5f3ff"
-                        stroke="#3b82f6"
-                        strokeWidth="2"
-                      />
-                      
-                      {/* Plant locations - 20 prominent cities */}
-                      {[
-                        // Major cities with coordinates
-                        { name: "Mumbai", x: 280, y: 280 },
-                        { name: "Delhi", x: 350, y: 180 },
-                        { name: "Bangalore", x: 350, y: 350 },
-                        { name: "Chennai", x: 400, y: 350 },
-                        { name: "Kolkata", x: 480, y: 250 },
-                        { name: "Hyderabad", x: 380, y: 320 },
-                        { name: "Pune", x: 300, y: 290 },
-                        { name: "Ahmedabad", x: 260, y: 240 },
-                        { name: "Surat", x: 270, y: 260 },
-                        { name: "Jaipur", x: 320, y: 200 },
-                        { name: "Lucknow", x: 400, y: 200 },
-                        { name: "Kanpur", x: 390, y: 210 },
-                        { name: "Nagpur", x: 370, y: 270 },
-                        { name: "Indore", x: 320, y: 240 },
-                        { name: "Bhopal", x: 340, y: 230 },
-                        { name: "Visakhapatnam", x: 420, y: 310 },
-                        { name: "Vadodara", x: 280, y: 250 },
-                        { name: "Coimbatore", x: 360, y: 370 },
-                        { name: "Agra", x: 380, y: 190 },
-                        { name: "Nashik", x: 310, y: 270 }
-                      ].map((city, index) => (
-                        <circle
-                          key={city.name}
-                          cx={city.x}
-                          cy={city.y}
-                          r="8"
-                          fill="#ef4444"
-                          stroke="#ffffff"
-                          strokeWidth="2"
-                          className={`cursor-pointer hover:r-10 transition-all ${city.name === 'Mumbai' ? 'animate-pulse' : ''}`}
-                          onClick={() => city.name === 'Mumbai' && setShowMumbaiKPI(true)}
-                          title={city.name}
-                        />
-                      ))}
-                      
-                      {/* City labels for key cities */}
-                      <text x="285" y="275" textAnchor="middle" className="text-xs font-medium fill-gray-700">Mumbai</text>
-                      <text x="355" y="175" textAnchor="middle" className="text-xs font-medium fill-gray-700">Delhi</text>
-                      <text x="355" y="345" textAnchor="middle" className="text-xs font-medium fill-gray-700">Bangalore</text>
-                      <text x="485" y="245" textAnchor="middle" className="text-xs font-medium fill-gray-700">Kolkata</text>
-                    </svg>
-                  </div>
-                  
-                  {/* Legend */}
-                  <div className="mt-4 flex items-center justify-center space-x-6">
-                    <div className="flex items-center space-x-2">
-                      <div className="w-4 h-4 bg-red-500 rounded-full border-2 border-white"></div>
-                      <span className="text-sm text-gray-600">Plant Location</span>
-                    </div>
-                    <div className="text-sm text-gray-500">Click Mumbai for detailed KPIs</div>
-                  </div>
+                <div className="text-center py-12 text-muted-foreground">
+                  <i className="fas fa-map-marker-alt text-6xl mb-4 block"></i>
+                  <h3 className="text-xl font-semibold mb-2">Location Analytics</h3>
+                  <p>Geographic breakdown of emissions across different facilities and regions.</p>
                 </div>
               </CardContent>
             </Card>
-          )}
-
-          {/* Mumbai KPI Popup Modal */}
-          {showMumbaiKPI && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-              <div className="bg-white rounded-lg p-6 max-w-2xl w-full mx-4 max-h-[80vh] overflow-y-auto">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-xl font-semibold">Mumbai Plant - Key Performance Indicators</h3>
-                  <button
-                    onClick={() => setShowMumbaiKPI(false)}
-                    className="text-gray-500 hover:text-gray-700"
-                  >
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                  </button>
-                </div>
-                
-                <div className="grid grid-cols-2 gap-4">
-                  {/* KPI Cards */}
-                  <div className="bg-blue-50 p-4 rounded-lg">
-                    <h4 className="text-sm font-medium text-gray-600 mb-1">Scope 1 Emissions</h4>
-                    <p className="text-2xl font-bold text-blue-600">2,450 tCO2e</p>
-                  </div>
-                  
-                  <div className="bg-green-50 p-4 rounded-lg">
-                    <h4 className="text-sm font-medium text-gray-600 mb-1">Scope 2 Emissions</h4>
-                    <p className="text-2xl font-bold text-green-600">1,820 tCO2e</p>
-                  </div>
-                  
-                  <div className="bg-orange-50 p-4 rounded-lg">
-                    <h4 className="text-sm font-medium text-gray-600 mb-1">Scope 3 Emissions</h4>
-                    <p className="text-2xl font-bold text-orange-600">3,150 tCO2e</p>
-                  </div>
-                  
-                  <div className="bg-purple-50 p-4 rounded-lg">
-                    <h4 className="text-sm font-medium text-gray-600 mb-1">Scope 1 Emissions Intensity</h4>
-                    <p className="text-2xl font-bold text-purple-600">0.45 tCO2e/₹L</p>
-                  </div>
-                  
-                  <div className="bg-indigo-50 p-4 rounded-lg">
-                    <h4 className="text-sm font-medium text-gray-600 mb-1">Scope 2 Emissions Intensity</h4>
-                    <p className="text-2xl font-bold text-indigo-600">0.33 tCO2e/₹L</p>
-                  </div>
-                  
-                  <div className="bg-pink-50 p-4 rounded-lg">
-                    <h4 className="text-sm font-medium text-gray-600 mb-1">Scope 3 Emissions Intensity</h4>
-                    <p className="text-2xl font-bold text-pink-600">0.57 tCO2e/₹L</p>
-                  </div>
-                  
-                  <div className="bg-yellow-50 p-4 rounded-lg">
-                    <h4 className="text-sm font-medium text-gray-600 mb-1">Energy Intensity per ₹ Revenue</h4>
-                    <p className="text-2xl font-bold text-yellow-600">2.8 MJ/₹</p>
-                  </div>
-                  
-                  <div className="bg-red-50 p-4 rounded-lg">
-                    <h4 className="text-sm font-medium text-gray-600 mb-1">Total Electricity Consumption</h4>
-                    <p className="text-2xl font-bold text-red-600">12.5 GWh</p>
-                  </div>
-                  
-                  <div className="bg-teal-50 p-4 rounded-lg">
-                    <h4 className="text-sm font-medium text-gray-600 mb-1">Total Fuel Consumption</h4>
-                    <p className="text-2xl font-bold text-teal-600">850 TJ</p>
-                  </div>
-                  
-                  <div className="bg-lime-50 p-4 rounded-lg">
-                    <h4 className="text-sm font-medium text-gray-600 mb-1">Renewable Energy %</h4>
-                    <p className="text-2xl font-bold text-lime-600">24.8%</p>
-                  </div>
-                  
-                  <div className="bg-cyan-50 p-4 rounded-lg">
-                    <h4 className="text-sm font-medium text-gray-600 mb-1">Water Consumption</h4>
-                    <p className="text-2xl font-bold text-cyan-600">450 kL</p>
-                  </div>
-                  
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <h4 className="text-sm font-medium text-gray-600 mb-1">Water Intensity</h4>
-                    <p className="text-2xl font-bold text-gray-600">0.082 kL/₹L</p>
-                  </div>
-                </div>
-                
-                <div className="mt-6 text-center">
-                  <button
-                    onClick={() => setShowMumbaiKPI(false)}
-                    className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                  >
-                    Close
-                  </button>
-                </div>
-              </div>
-            </div>
           )}
 
           {activeTab === "predictive" && (
