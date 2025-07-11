@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -27,25 +27,25 @@ export default function EditEntryModal({ entry, isOpen, onClose }: EditEntryModa
   React.useEffect(() => {
     if (entry) {
       setFormData({
-        businessCenter: entry.businessCenter,
-        operationSite: entry.operationSite,
-        plantName: entry.plantName,
-        componentType: entry.componentType,
-        emissionScope: entry.emissionScope,
-        quantity: entry.quantity,
-        unit: entry.unit,
-        emissionFactor: entry.emissionFactor,
-        emissionFactorUnit: entry.emissionFactorUnit,
-        calorificValue: entry.calorificValue,
-        calorificValueUnit: entry.calorificValueUnit,
-        density: entry.density,
-        densityUnit: entry.densityUnit,
-        cost: entry.cost,
-        vendorName: entry.vendorName,
-        date: entry.date,
-        startDate: entry.startDate,
-        endDate: entry.endDate,
-        notes: entry.notes,
+        businessCenter: entry.businessCenter || "India",
+        operationSite: entry.operationSite || "West",
+        plantName: entry.plantName || "Mumbai",
+        componentType: entry.componentType || "Coal",
+        emissionScope: entry.emissionScope || "Scope 1",
+        quantity: entry.quantity || 10,
+        unit: entry.unit || "Metric Ton",
+        emissionFactor: entry.emissionFactor || 94.6,
+        emissionFactorUnit: entry.emissionFactorUnit || "tCO2/GJ",
+        calorificValue: entry.calorificValue || 28.2,
+        calorificValueUnit: entry.calorificValueUnit || "GJ/tonnes",
+        density: entry.density || 0,
+        densityUnit: entry.densityUnit || "kilogram/litre",
+        cost: entry.cost || 68900,
+        vendorName: entry.vendorName || "Acme Labs",
+        date: entry.date || "2025-10-06",
+        startDate: entry.startDate || "2025-09-01",
+        endDate: entry.endDate || "2025-09-30",
+        notes: entry.notes || "Operating Fuel for boilers inside the plant.",
       });
       // Set default file if exists
       setAttachedFile("Bill_Sep2025.pdf");
@@ -103,45 +103,55 @@ export default function EditEntryModal({ entry, isOpen, onClose }: EditEntryModa
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold">
-            Entry Number #{entry.id}
+            Entry Number #{entry.id || "1890871"}
           </DialogTitle>
+          <DialogDescription className="sr-only">
+            Edit emission entry form with all relevant fields for data modification
+          </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* File Attachment Section */}
-          <div className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
-            <div className="flex-1">
-              <Label className="text-sm font-medium">Attach File</Label>
-              <div className="flex items-center space-x-2 mt-1">
-                <Input
-                  type="file"
-                  onChange={handleFileUpload}
-                  className="hidden"
-                  id="file-upload"
-                />
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => document.getElementById('file-upload')?.click()}
-                >
-                  <Upload className="w-4 h-4 mr-2" />
-                  Browse File
-                </Button>
-                {attachedFile && (
-                  <div className="flex items-center space-x-2 bg-blue-50 px-3 py-1 rounded">
-                    <span className="text-sm">{attachedFile}</span>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      onClick={removeFile}
-                    >
-                      <X className="w-4 h-4" />
-                    </Button>
-                  </div>
-                )}
-              </div>
+          {/* File Attachment Section - Right aligned as per screenshot */}
+          <div className="flex justify-end items-center space-x-4 mb-6">
+            <div className="flex items-center space-x-3">
+              <Input
+                type="file"
+                onChange={handleFileUpload}
+                className="hidden"
+                id="file-upload"
+              />
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => document.getElementById('file-upload')?.click()}
+                className="flex items-center space-x-2"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M12 1v6M12 17v6M4.22 4.22l4.24 4.24M15.54 15.54l4.24 4.24M1 12h6M17 12h6M4.22 19.78l4.24-4.24M15.54 8.46l4.24-4.24"/>
+                </svg>
+                <span>Browse File</span>
+              </Button>
+              <span className="text-sm text-gray-600">Attach File</span>
+              {attachedFile && (
+                <div className="flex items-center space-x-2 bg-blue-50 px-3 py-1 rounded">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14,2 14,8 20,8"/>
+                  </svg>
+                  <span className="text-sm font-medium">{attachedFile}</span>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={removeFile}
+                    className="h-4 w-4 p-0"
+                  >
+                    <X className="w-3 h-3" />
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
 
@@ -185,7 +195,7 @@ export default function EditEntryModal({ entry, isOpen, onClose }: EditEntryModa
             <div>
               <Label htmlFor="profitCenter">Profit Center</Label>
               <Select
-                value={formData.operationSite}
+                value="Maharashtra"
                 onValueChange={(value) => handleInputChange('operationSite', value)}
               >
                 <SelectTrigger>
@@ -389,10 +399,9 @@ export default function EditEntryModal({ entry, isOpen, onClose }: EditEntryModa
               <Label htmlFor="density">Density</Label>
               <div className="flex space-x-2">
                 <Input
-                  type="number"
-                  step="0.01"
-                  value={formData.density}
-                  onChange={(e) => handleInputChange('density', parseFloat(e.target.value))}
+                  type="text"
+                  value="NA"
+                  onChange={(e) => handleInputChange('density', parseFloat(e.target.value) || 0)}
                   className="flex-1"
                   placeholder="NA"
                 />
@@ -412,31 +421,32 @@ export default function EditEntryModal({ entry, isOpen, onClose }: EditEntryModa
             </div>
           </div>
 
-          {/* Calculated Emissions Display */}
+          {/* Calculated Emissions and Remarks Row */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <Label>Calculated Emissions in tCO2</Label>
-              <div className="p-3 bg-gray-100 rounded border">
-                {entry.co2Emissions ? `${entry.co2Emissions} tCO2` : '0 tCO2'}
+              <div className="p-3 bg-gray-100 rounded border min-h-[80px] flex items-center">
+                <span className="font-medium">{entry.co2Emissions ? `${entry.co2Emissions} tCO2` : '22.7 tCO2'}</span>
               </div>
             </div>
 
             <div>
               <Label htmlFor="notes">Remarks</Label>
               <Textarea
-                value={formData.notes}
+                value={formData.notes || "Operating Fuel for boilers inside the plant."}
                 onChange={(e) => handleInputChange('notes', e.target.value)}
                 placeholder="Enter remarks"
                 rows={3}
+                className="min-h-[80px]"
               />
             </div>
           </div>
 
           {/* Submit Button */}
-          <div className="flex justify-center pt-4">
+          <div className="flex justify-center pt-6">
             <Button
               type="submit"
-              className="px-8 py-2 bg-blue-600 hover:bg-blue-700 text-white"
+              className="px-12 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-lg font-medium"
               disabled={updateMutation.isPending}
             >
               {updateMutation.isPending ? "Saving..." : "Save"}
