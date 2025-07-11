@@ -30,7 +30,10 @@ export default function Analytics() {
   const [showEnergyDropdown, setShowEnergyDropdown] = useState(false);
   const [monitoringCategory, setMonitoringCategory] = useState("energy");
   const [monitoringSubCategory, setMonitoringSubCategory] = useState("electricity");
-  const [selectedKPI, setSelectedKPI] = useState("scope1-emissions");
+  const [selectedKPI, setSelectedKPI] = useState("scope1-intensity");
+  const [targetReduced, setTargetReduced] = useState("0");
+  const [targetUnit, setTargetUnit] = useState("tCO2e/Million INR");
+  const [targetYear, setTargetYear] = useState("2040");
 
   // Fetch emissions data
   const { data: entries = [] } = useQuery<EmissionEntry[]>({
@@ -149,12 +152,12 @@ export default function Analytics() {
   ];
 
   const kpiOptions = [
+    { value: "scope1-intensity", label: "Scope 1 Intensity" },
+    { value: "scope2-intensity", label: "Scope 2 Intensity" },
+    { value: "scope3-intensity", label: "Scope 3 Intensity" },
     { value: "scope1-emissions", label: "Scope 1 Emissions" },
     { value: "scope2-emissions", label: "Scope 2 Emissions" },
     { value: "scope3-emissions", label: "Scope 3 Emissions" },
-    { value: "scope1-intensity", label: "Scope 1 Emissions Intensity" },
-    { value: "scope2-intensity", label: "Scope 2 Emissions Intensity" },
-    { value: "scope3-intensity", label: "Scope 3 Emissions Intensity" },
     { value: "energy-intensity", label: "Energy Intensity per Rupee of Revenue" },
     { value: "electricity-consumption", label: "Total Electricity Consumption" },
     { value: "fuel-consumption", label: "Total Fuel Consumption" },
@@ -163,15 +166,46 @@ export default function Analytics() {
     { value: "water-intensity", label: "Water Intensity" }
   ];
 
-  // Generate sample data for predictive analysis
-  const generatePredictiveData = (kpi: string) => {
-    const baseValue = Math.random() * 100 + 50;
-    return Array.from({ length: 12 }, (_, i) => ({
-      month: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][i],
-      historical: baseValue + Math.random() * 20 - 10,
-      predicted: baseValue + Math.random() * 15 - 5,
-      target: baseValue * 0.9 // Target is 10% reduction
-    }));
+  const targetUnits = [
+    { value: "tCO2e/Million INR", label: "tCO2e/Million INR" },
+    { value: "kg CO2e/Million INR", label: "kg CO2e/Million INR" },
+    { value: "tCO2e", label: "tCO2e" },
+    { value: "kg CO2e", label: "kg CO2e" },
+    { value: "kWh/Million INR", label: "kWh/Million INR" },
+    { value: "liters/Million INR", label: "liters/Million INR" }
+  ];
+
+  const targetYears = [
+    { value: "2030", label: "2030" },
+    { value: "2035", label: "2035" },
+    { value: "2040", label: "2040" },
+    { value: "2045", label: "2045" },
+    { value: "2050", label: "2050" }
+  ];
+
+  // Generate sample data for predictive analysis matching the chart
+  const generatePredictiveData = () => {
+    const years = [];
+    const currentYear = 2020;
+    const endYear = parseInt(targetYear);
+    
+    for (let year = currentYear; year <= endYear; year++) {
+      years.push(year);
+    }
+    
+    return years.map((year, index) => {
+      const progress = index / (years.length - 1);
+      // Current trend starts at 45 and decreases slowly
+      const currentTrend = 45 - (progress * 35); // Goes from 45 to 10
+      // Target trend starts at 45 and decreases faster
+      const targetTrend = 45 - (progress * 45); // Goes from 45 to 0
+      
+      return {
+        year: year,
+        currentTrend: Math.max(0, currentTrend),
+        targetTrend: Math.max(0, targetTrend)
+      };
+    });
   };
 
   return (
@@ -691,76 +725,170 @@ export default function Analytics() {
           {/* Predictive Analysis Tab */}
           {activeTab === "predictive" && (
             <div className="space-y-6">
-              {/* KPI Selection */}
+              {/* Three-field Menu */}
               <Card>
-                <CardHeader>
-                  <CardTitle>Predictive Analysis</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="mb-6">
-                    <label className="block text-sm font-medium mb-2">Select KPI</label>
-                    <Select value={selectedKPI} onValueChange={setSelectedKPI}>
-                      <SelectTrigger className="w-96">
-                        <SelectValue placeholder="Select a KPI to analyze" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {kpiOptions.map((option) => (
-                          <SelectItem key={option.value} value={option.value}>
-                            {option.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                <CardContent className="pt-6">
+                  <div className="grid grid-cols-3 gap-8">
+                    {/* Choose KPI */}
+                    <div className="space-y-2">
+                      <label className="block text-sm font-medium text-gray-700">Choose KPI</label>
+                      <Select value={selectedKPI} onValueChange={setSelectedKPI}>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Select KPI" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {kpiOptions.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    {/* Target Reduced to */}
+                    <div className="space-y-2">
+                      <label className="block text-sm font-medium text-gray-700">Target Reduced to</label>
+                      <div className="flex space-x-2">
+                        <input
+                          type="number"
+                          value={targetReduced}
+                          onChange={(e) => setTargetReduced(e.target.value)}
+                          className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          placeholder="0"
+                        />
+                        <Select value={targetUnit} onValueChange={setTargetUnit}>
+                          <SelectTrigger className="w-48">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {targetUnits.map((unit) => (
+                              <SelectItem key={unit.value} value={unit.value}>
+                                {unit.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+
+                    {/* Target Year */}
+                    <div className="space-y-2">
+                      <label className="block text-sm font-medium text-gray-700">Target Year</label>
+                      <Select value={targetYear} onValueChange={setTargetYear}>
+                        <SelectTrigger className="w-full">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {targetYears.map((year) => (
+                            <SelectItem key={year.value} value={year.value}>
+                              {year.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Chart */}
+              <Card>
+                <CardContent className="pt-6">
+                  {/* Chart Title */}
+                  <div className="mb-6 text-center">
+                    <div className="inline-block px-4 py-2 bg-gray-100 border rounded-md">
+                      <span className="text-sm font-medium">Scope 1 Intensity tCO2 e/Million INR</span>
+                    </div>
                   </div>
 
-                  {/* Predictive Chart */}
+                  {/* Chart */}
                   <div className="h-96">
                     <ResponsiveContainer width="100%" height="100%">
-                      <LineChart data={generatePredictiveData(selectedKPI)}>
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="month" />
-                        <YAxis />
-                        <Tooltip />
-                        <Legend />
-                        <Line 
-                          type="monotone" 
-                          dataKey="historical" 
-                          stroke="#3b82f6" 
-                          strokeWidth={2}
-                          name="Historical Data"
-                          dot={{ fill: '#3b82f6' }}
+                      <LineChart data={generatePredictiveData()} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                        <XAxis 
+                          dataKey="year" 
+                          tick={{ fontSize: 10 }}
+                          axisLine={{ stroke: '#9ca3af' }}
+                          tickLine={{ stroke: '#9ca3af' }}
+                        />
+                        <YAxis 
+                          tick={{ fontSize: 10 }}
+                          axisLine={{ stroke: '#9ca3af' }}
+                          tickLine={{ stroke: '#9ca3af' }}
+                          label={{ value: 'Scope 1 Intensity tCO2 e/Million INR', angle: -90, position: 'insideLeft' }}
+                        />
+                        <Tooltip 
+                          contentStyle={{ 
+                            backgroundColor: 'white', 
+                            border: '1px solid #d1d5db',
+                            borderRadius: '6px'
+                          }}
+                        />
+                        <Legend 
+                          wrapperStyle={{ paddingTop: '20px' }}
+                          iconType="line"
                         />
                         <Line 
                           type="monotone" 
-                          dataKey="predicted" 
-                          stroke="#ef4444" 
-                          strokeWidth={2}
-                          strokeDasharray="5 5"
-                          name="Predicted Values"
-                          dot={{ fill: '#ef4444' }}
+                          dataKey="currentTrend" 
+                          stroke="#ea580c" 
+                          strokeWidth={3}
+                          name="Current Trend"
+                          dot={false}
                         />
                         <Line 
                           type="monotone" 
-                          dataKey="target" 
-                          stroke="#22c55e" 
-                          strokeWidth={2}
-                          name="Target Values"
-                          dot={{ fill: '#22c55e' }}
+                          dataKey="targetTrend" 
+                          stroke="#1e40af" 
+                          strokeWidth={3}
+                          name="Target Trend"
+                          dot={false}
                         />
                       </LineChart>
                     </ResponsiveContainer>
                   </div>
 
-                  {/* KPI Info */}
-                  <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-                    <h4 className="font-medium text-blue-900 mb-2">
-                      {kpiOptions.find(opt => opt.value === selectedKPI)?.label} Analysis
-                    </h4>
-                    <p className="text-sm text-blue-700">
-                      This predictive model uses historical data patterns to forecast future trends and performance against sustainability targets.
-                      The blue line shows historical actual values, the red dashed line shows AI predictions, and the green line represents your reduction targets.
-                    </p>
+                  {/* Year label */}
+                  <div className="text-center mt-2">
+                    <span className="text-sm font-medium text-gray-700">Year</span>
                   </div>
+                </CardContent>
+              </Card>
+
+              {/* Strategies Section */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Strategies for Scope 1 Intensity Reduction</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-3 text-sm text-gray-700">
+                    <li className="flex items-start">
+                      <span className="w-2 h-2 bg-blue-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      <span>Implement energy-efficient technologies and equipment upgrades to reduce direct fuel consumption across all operations</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="w-2 h-2 bg-blue-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      <span>Transition to cleaner fuel alternatives such as natural gas or biofuels to replace high-carbon fossil fuels</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="w-2 h-2 bg-blue-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      <span>Optimize industrial processes through lean manufacturing principles and waste heat recovery systems</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="w-2 h-2 bg-blue-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      <span>Invest in on-site renewable energy generation to reduce dependency on carbon-intensive grid electricity</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="w-2 h-2 bg-blue-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      <span>Establish carbon capture and storage technologies for high-emission industrial processes</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="w-2 h-2 bg-blue-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      <span>Implement comprehensive energy management systems with real-time monitoring and optimization capabilities</span>
+                    </li>
+                  </ul>
                 </CardContent>
               </Card>
             </div>

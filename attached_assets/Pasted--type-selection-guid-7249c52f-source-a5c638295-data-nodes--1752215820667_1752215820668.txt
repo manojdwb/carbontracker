@@ -1,0 +1,83 @@
+{
+  "type": "selection",
+  "guid": "7249c52f",
+  "source": "a5c638295",
+  "data": {
+    "nodes": [
+      {
+        "id": "3ee3273b",
+        "x": 156,
+        "y": 535,
+        "width": 120,
+        "height": 32,
+        "rotation": -90,
+        "transform": "matrix(0 -1 1 0 156 655)",
+        "inspectables": {
+          "width_policy": "fixed",
+          "height_policy": "fixed",
+          "color": "rgb(35,35,35)",
+          "font_size": 12,
+          "text_align": "center",
+          "background_color": "rgb(235,235,235)",
+          "stroke_color": "rgb(35,35,35)",
+          "stroke_width": 1,
+          "stroke_style": "solid",
+          "opacity": 100,
+          "corner_radius_tl": 3,
+          "corner_radius_tr": 3,
+          "corner_radius_br": 3,
+          "corner_radius_bl": 3,
+          "corner_radius_lock": true,
+          "corner_radius_scale": false,
+          "bold": false,
+          "italic": false,
+          "underline": false,
+          "strikethrough": false,
+          "small_caps": false,
+          "uppercase": false,
+          "capitalize": false,
+          "letter_spacing": 0,
+          "font": "Helvetica",
+          "font_weight": 400,
+          "aspect_lock": false,
+          "fe_dropshadow_enabled": false,
+          "fe_dropshadow_opacity": 25,
+          "fe_dropshadow_angle": 90,
+          "fe_dropshadow_distance": 4,
+          "fe_dropshadow_size": 4,
+          "fe_dropshadow_color": "rgb(0, 0, 0)",
+          "vertical_align": "middle",
+          "padding_left": 10,
+          "padding_right": 10,
+          "padding_top": 0,
+          "padding_bottom": 0,
+          "padding_lock": false,
+          "fe_blur_enabled": false,
+          "fe_blur_size": 5
+        },
+        "text": "<p dir=\"auto\">Scope 1 Intensity tCO2 e/Million INR</p>",
+        "name": "button",
+        "deps": {}
+      }
+    ],
+    "hierarchy": {
+      "3ee3273b": {
+        "id": "3ee3273b",
+        "type": "item",
+        "locked": false,
+        "link": null,
+        "aspect_lock": false,
+        "visible": true,
+        "instance_name": "Button 4"
+      }
+    },
+    "idMapping": {
+      "49b9ec7d": "3ee3273b"
+    },
+    "size": {
+      "width": 32,
+      "height": 120
+    },
+    "symbolInstances": {}
+  }
+}

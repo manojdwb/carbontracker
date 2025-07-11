@@ -113,6 +113,12 @@ The application uses two main tables:
 ```
 Changelog:
 - June 24, 2025. Initial setup
+- July 11, 2025. Major UI improvements:
+  - Removed Improvement Plan section from navigation
+  - Added scroll functionality to Dashboard Reports and News sections
+  - Enhanced Predictive Analysis with comprehensive KPI dropdown and visualization
+  - Implemented three-field menu interface for predictive analysis
+  - Added strategies section for emission reduction planning
 ```
 
 ## User Preferences
