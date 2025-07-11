@@ -13,7 +13,8 @@ export default function Preferences() {
               <CardTitle className="text-2xl font-semibold">Preferences</CardTitle>
             </CardHeader>
             <CardContent className="p-8">
-              <div className="grid grid-cols-4 gap-8">
+              {/* First Row - 4 columns */}
+              <div className="grid grid-cols-4 gap-8 mb-8">
                 {/* Emission Factor - Energy Basis */}
                 <div className="space-y-2">
                   <Label className="text-sm font-medium text-gray-700">Emission Factor - Energy Basis</Label>
@@ -73,7 +74,10 @@ export default function Preferences() {
                     </SelectContent>
                   </Select>
                 </div>
+              </div>
 
+              {/* Second Row - 4 columns */}
+              <div className="grid grid-cols-4 gap-8 mb-8">
                 {/* Emission Factor - Mass Basis */}
                 <div className="space-y-2">
                   <Label className="text-sm font-medium text-gray-700">Emission Factor - Mass Basis</Label>
@@ -118,6 +122,46 @@ export default function Preferences() {
                     </SelectContent>
                   </Select>
                 </div>
+
+                {/* Emission Factor */}
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium text-gray-700">Emission Factor</Label>
+                  <Select defaultValue="IEA">
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="IEA">IEA</SelectItem>
+                      <SelectItem value="CEA">CEA</SelectItem>
+                      <SelectItem value="IPCC">IPCC</SelectItem>
+                      <SelectItem value="Defra">Defra</SelectItem>
+                      <SelectItem value="India GHG">India GHG</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              {/* Third Row - Data Base */}
+              <div className="grid grid-cols-4 gap-8">
+                {/* Data Base */}
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium text-gray-700">Data Base</Label>
+                  <Select defaultValue="Ecoinvent">
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Ecoinvent">Ecoinvent</SelectItem>
+                      <SelectItem value="GaBi">GaBi</SelectItem>
+                      <SelectItem value="SimaPro">SimaPro</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Empty cells to maintain grid layout */}
+                <div></div>
+                <div></div>
+                <div></div>
               </div>
             </CardContent>
           </Card>
