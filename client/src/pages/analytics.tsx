@@ -36,10 +36,10 @@ export default function Analytics() {
   const [targetYear, setTargetYear] = useState("2040");
   
   // Multi-level filter states
-  const [selectedMonitoringFilter, setSelectedMonitoringFilter] = useState("energy");
-  const [selectedEnergyFilter, setSelectedEnergyFilter] = useState("electricity");
-  const [selectedWaterFilter, setSelectedWaterFilter] = useState("absolute-water");
-  const [selectedWasteFilter, setSelectedWasteFilter] = useState("waste-generated");
+  const [selectedMonitoringFilter, setSelectedMonitoringFilter] = useState("");
+  const [selectedSubFilter, setSelectedSubFilter] = useState("");
+  const [showMonitoringOptions, setShowMonitoringOptions] = useState(false);
+  const [showSubOptions, setShowSubOptions] = useState(false);
 
   // Fetch emissions data
   const { data: entries = [] } = useQuery<EmissionEntry[]>({
@@ -164,21 +164,28 @@ export default function Analytics() {
     { id: "waste", label: "Waste" }
   ];
 
-  const energyFilterOptions = [
-    { id: "electricity", label: "Electricity" },
-    { id: "gas", label: "Gas" },
-    { id: "natural-gas", label: "Natural Gas" },
-    { id: "diesel", label: "Diesel" }
-  ];
-
-  const waterFilterOptions = [
-    { id: "absolute-water", label: "Absolute Water Consumption" },
-    { id: "water-intensity", label: "Water Intensity" }
-  ];
-
-  const wasteFilterOptions = [
-    { id: "waste-generated", label: "Waste Generated in US Tons" }
-  ];
+  const getSubFilterOptions = (category: string) => {
+    switch (category) {
+      case "energy":
+        return [
+          { id: "electricity", label: "Electricity" },
+          { id: "natural-gas", label: "Natural Gas" },
+          { id: "coal", label: "Coal" },
+          { id: "diesel", label: "Diesel" }
+        ];
+      case "water":
+        return [
+          { id: "absolute-water", label: "Absolute Water Consumption" },
+          { id: "water-intensity", label: "Water Intensity" }
+        ];
+      case "waste":
+        return [
+          { id: "waste-generated", label: "Waste Generated in US Tons" }
+        ];
+      default:
+        return [];
+    }
+  };
 
   const kpiOptions = [
     { value: "scope1-intensity", label: "Scope 1 Intensity" },
@@ -591,95 +598,86 @@ export default function Analytics() {
               {/* Multi-level Filter System */}
               <Card>
                 <CardContent className="pt-6">
-                  <div className="grid grid-cols-4 gap-6">
-                    {/* Drop down list for Monitoring */}
-                    <div className="space-y-3">
-                      <label className="block text-sm font-medium text-gray-700">Drop down list for Monitoring</label>
-                      <div className="border border-gray-300 rounded-md">
-                        {monitoringFilterOptions.map((option, index) => (
-                          <div
-                            key={option.id}
-                            className={`px-4 py-3 cursor-pointer border-b last:border-b-0 ${
-                              selectedMonitoringFilter === option.id 
-                                ? 'bg-blue-50 text-blue-700' 
-                                : 'hover:bg-gray-50'
-                            }`}
-                            onClick={() => {
-                              setSelectedMonitoringFilter(option.id);
-                              // Reset sub-filters when main filter changes
-                              if (option.id === "energy") setSelectedEnergyFilter("electricity");
-                              if (option.id === "water") setSelectedWaterFilter("absolute-water");
-                              if (option.id === "waste") setSelectedWasteFilter("waste-generated");
-                            }}
-                          >
-                            {option.label}
-                          </div>
-                        ))}
-                      </div>
+                  <div className="flex items-start space-x-6">
+                    {/* Primary Monitoring Dropdown */}
+                    <div className="relative">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Monitoring</label>
+                      <button
+                        onClick={() => {
+                          setShowMonitoringOptions(!showMonitoringOptions);
+                          setShowSubOptions(false);
+                        }}
+                        className="flex items-center justify-between w-48 px-4 py-2 text-left bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        <span className="text-gray-700">
+                          {selectedMonitoringFilter ? monitoringFilterOptions.find(opt => opt.id === selectedMonitoringFilter)?.label : "Select Category"}
+                        </span>
+                        <ChevronDown size={16} className={`transition-transform ${showMonitoringOptions ? 'rotate-180' : ''}`} />
+                      </button>
+                      
+                      {showMonitoringOptions && (
+                        <div className="absolute top-full left-0 mt-1 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+                          {monitoringFilterOptions.map((option) => (
+                            <div
+                              key={option.id}
+                              className="px-4 py-2 hover:bg-gray-50 cursor-pointer border-b last:border-b-0"
+                              onClick={() => {
+                                setSelectedMonitoringFilter(option.id);
+                                setSelectedSubFilter("");
+                                setShowMonitoringOptions(false);
+                                setShowSubOptions(false);
+                              }}
+                            >
+                              {option.label}
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
 
-                    {/* Drop down list for Energy */}
-                    <div className="space-y-3">
-                      <label className="block text-sm font-medium text-gray-700">Drop down list for Energy</label>
-                      <div className="border border-gray-300 rounded-md">
-                        {energyFilterOptions.map((option) => (
-                          <div
-                            key={option.id}
-                            className={`px-4 py-3 cursor-pointer border-b last:border-b-0 ${
-                              selectedEnergyFilter === option.id && selectedMonitoringFilter === "energy"
-                                ? 'bg-blue-50 text-blue-700' 
-                                : 'hover:bg-gray-50'
-                            }`}
-                            onClick={() => setSelectedEnergyFilter(option.id)}
-                          >
-                            {option.label}
-                          </div>
-                        ))}
+                    {/* Arrow */}
+                    {selectedMonitoringFilter && (
+                      <div className="flex items-center pt-8">
+                        <span className="text-gray-400 text-lg">→</span>
                       </div>
-                    </div>
+                    )}
 
-                    {/* Drop down list for Water */}
-                    <div className="space-y-3">
-                      <label className="block text-sm font-medium text-gray-700">Drop down list for Water</label>
-                      <div className="border border-gray-300 rounded-md">
-                        {waterFilterOptions.map((option) => (
-                          <div
-                            key={option.id}
-                            className={`px-4 py-3 cursor-pointer border-b last:border-b-0 ${
-                              selectedWaterFilter === option.id && selectedMonitoringFilter === "water"
-                                ? 'bg-blue-50 text-blue-700' 
-                                : 'hover:bg-gray-50'
-                            }`}
-                            onClick={() => setSelectedWaterFilter(option.id)}
-                          >
-                            {option.label}
+                    {/* Secondary Sub-category Dropdown */}
+                    {selectedMonitoringFilter && (
+                      <div className="relative">
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          {selectedMonitoringFilter === "energy" ? "Energy Type" :
+                           selectedMonitoringFilter === "water" ? "Water Metric" :
+                           selectedMonitoringFilter === "waste" ? "Waste Metric" : "Options"}
+                        </label>
+                        <button
+                          onClick={() => setShowSubOptions(!showSubOptions)}
+                          className="flex items-center justify-between w-56 px-4 py-2 text-left bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+                          <span className="text-gray-700">
+                            {selectedSubFilter ? getSubFilterOptions(selectedMonitoringFilter).find(opt => opt.id === selectedSubFilter)?.label : "Select Option"}
+                          </span>
+                          <ChevronDown size={16} className={`transition-transform ${showSubOptions ? 'rotate-180' : ''}`} />
+                        </button>
+                        
+                        {showSubOptions && (
+                          <div className="absolute top-full left-0 mt-1 w-56 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+                            {getSubFilterOptions(selectedMonitoringFilter).map((option) => (
+                              <div
+                                key={option.id}
+                                className="px-4 py-2 hover:bg-gray-50 cursor-pointer border-b last:border-b-0"
+                                onClick={() => {
+                                  setSelectedSubFilter(option.id);
+                                  setShowSubOptions(false);
+                                }}
+                              >
+                                {option.label}
+                              </div>
+                            ))}
                           </div>
-                        ))}
+                        )}
                       </div>
-                    </div>
-
-                    {/* Drop down list for Waste */}
-                    <div className="space-y-3">
-                      <label className="block text-sm font-medium text-gray-700">Drop down list for Waste</label>
-                      <div className="border border-gray-300 rounded-md">
-                        {wasteFilterOptions.map((option) => (
-                          <div
-                            key={option.id}
-                            className={`px-4 py-3 cursor-pointer border-b last:border-b-0 ${
-                              selectedWasteFilter === option.id && selectedMonitoringFilter === "waste"
-                                ? 'bg-blue-50 text-blue-700' 
-                                : 'hover:bg-gray-50'
-                            }`}
-                            onClick={() => setSelectedWasteFilter(option.id)}
-                          >
-                            {option.label}
-                          </div>
-                        ))}
-                        {/* Empty space to match the image layout */}
-                        <div className="px-4 py-3 border-b last:border-b-0"></div>
-                        <div className="px-4 py-3"></div>
-                      </div>
-                    </div>
+                    )}
                   </div>
                 </CardContent>
               </Card>
@@ -688,12 +686,13 @@ export default function Analytics() {
               <Card>
                 <CardHeader>
                   <CardTitle>
-                    Monitoring › {selectedMonitoringFilter.charAt(0).toUpperCase() + selectedMonitoringFilter.slice(1)} › {
-                      selectedMonitoringFilter === "energy" ? energyFilterOptions.find(opt => opt.id === selectedEnergyFilter)?.label :
-                      selectedMonitoringFilter === "water" ? waterFilterOptions.find(opt => opt.id === selectedWaterFilter)?.label :
-                      selectedMonitoringFilter === "waste" ? wasteFilterOptions.find(opt => opt.id === selectedWasteFilter)?.label :
-                      ""
-                    }
+                    {selectedMonitoringFilter && selectedSubFilter ? (
+                      `Monitoring › ${selectedMonitoringFilter.charAt(0).toUpperCase() + selectedMonitoringFilter.slice(1)} › ${
+                        getSubFilterOptions(selectedMonitoringFilter).find(opt => opt.id === selectedSubFilter)?.label
+                      }`
+                    ) : (
+                      "Monitoring Data - Select filters above"
+                    )}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
