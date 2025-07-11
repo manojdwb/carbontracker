@@ -186,7 +186,7 @@ export default function Dashboard() {
               <CardHeader>
                 <CardTitle className="text-lg font-medium text-blue-600">Reports</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="max-h-64 overflow-y-auto">
                 <div className="space-y-4">
                   {reports.map((report, index) => (
                     <div key={index} className="flex items-center space-x-3">
@@ -205,7 +205,7 @@ export default function Dashboard() {
               <CardHeader>
                 <CardTitle className="text-lg font-medium text-blue-600">News</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="max-h-64 overflow-y-auto">
                 <div className="space-y-4">
                   {news.map((item, index) => (
                     <div key={index} className="text-blue-600 hover:underline cursor-pointer leading-relaxed">

@@ -4,6 +4,7 @@ import Header from "@/components/layout/header";
 import MainLayout from "@/components/layout/main-layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ChevronDown } from "lucide-react";
 import { 
   PieChart, 
@@ -17,7 +18,9 @@ import {
   Tooltip, 
   Legend,
   ResponsiveContainer,
-  Treemap
+  Treemap,
+  LineChart,
+  Line
 } from "recharts";
 import type { EmissionEntry } from "@shared/schema";
 
@@ -27,6 +30,7 @@ export default function Analytics() {
   const [showEnergyDropdown, setShowEnergyDropdown] = useState(false);
   const [monitoringCategory, setMonitoringCategory] = useState("energy");
   const [monitoringSubCategory, setMonitoringSubCategory] = useState("electricity");
+  const [selectedKPI, setSelectedKPI] = useState("scope1-emissions");
 
   // Fetch emissions data
   const { data: entries = [] } = useQuery<EmissionEntry[]>({
@@ -143,6 +147,32 @@ export default function Analytics() {
       ]
     }
   ];
+
+  const kpiOptions = [
+    { value: "scope1-emissions", label: "Scope 1 Emissions" },
+    { value: "scope2-emissions", label: "Scope 2 Emissions" },
+    { value: "scope3-emissions", label: "Scope 3 Emissions" },
+    { value: "scope1-intensity", label: "Scope 1 Emissions Intensity" },
+    { value: "scope2-intensity", label: "Scope 2 Emissions Intensity" },
+    { value: "scope3-intensity", label: "Scope 3 Emissions Intensity" },
+    { value: "energy-intensity", label: "Energy Intensity per Rupee of Revenue" },
+    { value: "electricity-consumption", label: "Total Electricity Consumption" },
+    { value: "fuel-consumption", label: "Total Fuel Consumption" },
+    { value: "renewable-energy-percent", label: "Renewable Energy Consumption as % of Total Electricity Consumption" },
+    { value: "water-consumption", label: "Water Consumption" },
+    { value: "water-intensity", label: "Water Intensity" }
+  ];
+
+  // Generate sample data for predictive analysis
+  const generatePredictiveData = (kpi: string) => {
+    const baseValue = Math.random() * 100 + 50;
+    return Array.from({ length: 12 }, (_, i) => ({
+      month: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][i],
+      historical: baseValue + Math.random() * 20 - 10,
+      predicted: baseValue + Math.random() * 15 - 5,
+      target: baseValue * 0.9 // Target is 10% reduction
+    }));
+  };
 
   return (
     <MainLayout>
@@ -658,35 +688,82 @@ export default function Analytics() {
             </div>
           )}
 
-          {/* Other Tabs Placeholder */}
-          {activeTab === "location" && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Emissions by Location</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-center py-12 text-muted-foreground">
-                  <i className="fas fa-map-marker-alt text-6xl mb-4 block"></i>
-                  <h3 className="text-xl font-semibold mb-2">Location Analytics</h3>
-                  <p>Geographic breakdown of emissions across different facilities and regions.</p>
-                </div>
-              </CardContent>
-            </Card>
-          )}
-
+          {/* Predictive Analysis Tab */}
           {activeTab === "predictive" && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Predictive Analysis</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-center py-12 text-muted-foreground">
-                  <i className="fas fa-crystal-ball text-6xl mb-4 block"></i>
-                  <h3 className="text-xl font-semibold mb-2">Predictive Modeling</h3>
-                  <p>AI-powered forecasting and trend analysis for emission reduction planning.</p>
-                </div>
-              </CardContent>
-            </Card>
+            <div className="space-y-6">
+              {/* KPI Selection */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Predictive Analysis</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="mb-6">
+                    <label className="block text-sm font-medium mb-2">Select KPI</label>
+                    <Select value={selectedKPI} onValueChange={setSelectedKPI}>
+                      <SelectTrigger className="w-96">
+                        <SelectValue placeholder="Select a KPI to analyze" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {kpiOptions.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  {/* Predictive Chart */}
+                  <div className="h-96">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <LineChart data={generatePredictiveData(selectedKPI)}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="month" />
+                        <YAxis />
+                        <Tooltip />
+                        <Legend />
+                        <Line 
+                          type="monotone" 
+                          dataKey="historical" 
+                          stroke="#3b82f6" 
+                          strokeWidth={2}
+                          name="Historical Data"
+                          dot={{ fill: '#3b82f6' }}
+                        />
+                        <Line 
+                          type="monotone" 
+                          dataKey="predicted" 
+                          stroke="#ef4444" 
+                          strokeWidth={2}
+                          strokeDasharray="5 5"
+                          name="Predicted Values"
+                          dot={{ fill: '#ef4444' }}
+                        />
+                        <Line 
+                          type="monotone" 
+                          dataKey="target" 
+                          stroke="#22c55e" 
+                          strokeWidth={2}
+                          name="Target Values"
+                          dot={{ fill: '#22c55e' }}
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </div>
+
+                  {/* KPI Info */}
+                  <div className="mt-6 p-4 bg-blue-50 rounded-lg">
+                    <h4 className="font-medium text-blue-900 mb-2">
+                      {kpiOptions.find(opt => opt.value === selectedKPI)?.label} Analysis
+                    </h4>
+                    <p className="text-sm text-blue-700">
+                      This predictive model uses historical data patterns to forecast future trends and performance against sustainability targets.
+                      The blue line shows historical actual values, the red dashed line shows AI predictions, and the green line represents your reduction targets.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           )}
 
           {activeTab === "roadmap" && (

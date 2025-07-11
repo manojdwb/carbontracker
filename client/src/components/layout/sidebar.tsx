@@ -8,7 +8,6 @@ const navigation = [
   { name: "Reporting", href: "/reporting", icon: "fas fa-file-alt" },
   { name: "Market Analysis", href: "/market-analysis", icon: "fas fa-lock" },
   { name: "Supplier Assessment", href: "/supplier-assessment", icon: "fas fa-handshake" },
-  { name: "Improvement Plan", href: "/improvement-plan", icon: "fas fa-bullseye" },
 ];
 
 export default function Sidebar() {

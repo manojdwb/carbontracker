@@ -9,7 +9,6 @@ import Data from "@/pages/data";
 import Analytics from "@/pages/analytics";
 import Reporting from "@/pages/reporting";
 import SupplierAssessment from "@/pages/supplier-assessment";
-import ImprovementPlan from "@/pages/improvement-plan";
 import MarketAnalysis from "@/pages/market-analysis";
 import ReportViewer from "@/pages/report-viewer";
 import AccountDetails from "@/pages/account-details";
@@ -27,7 +26,6 @@ function Router() {
           <Route path="/analytics" component={Analytics} />
           <Route path="/reporting" component={Reporting} />
           <Route path="/supplier-assessment" component={SupplierAssessment} />
-          <Route path="/improvement-plan" component={ImprovementPlan} />
           <Route path="/market-analysis" component={MarketAnalysis} />
           <Route path="/report-viewer" component={ReportViewer} />
           <Route path="/account-details" component={AccountDetails} />
