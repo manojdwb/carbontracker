@@ -9,11 +9,14 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { getComponentIcon, getComponentColor, formatCO2, getDateRange } from "@/lib/utils";
+import EditEntryModal from "./edit-entry-modal";
 import type { EmissionEntry } from "@shared/schema";
 
 export default function EmissionsTable() {
   const [searchQuery, setSearchQuery] = useState("");
   const [dateFilter, setDateFilter] = useState("all-time");
+  const [selectedEntry, setSelectedEntry] = useState<EmissionEntry | null>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -47,6 +50,16 @@ export default function EmissionsTable() {
     if (confirm("Are you sure you want to delete this emission entry?")) {
       deleteMutation.mutate(id);
     }
+  };
+
+  const handleEditEntry = (entry: EmissionEntry) => {
+    setSelectedEntry(entry);
+    setIsEditModalOpen(true);
+  };
+
+  const handleCloseEditModal = () => {
+    setIsEditModalOpen(false);
+    setSelectedEntry(null);
   };
 
   // Filter entries based on search and date filter
@@ -143,7 +156,11 @@ export default function EmissionsTable() {
                 </TableHeader>
                 <TableBody>
                   {filteredEntries.map((entry) => (
-                    <TableRow key={entry.id} className="hover:bg-muted/50">
+                    <TableRow 
+                      key={entry.id} 
+                      className="hover:bg-muted/50 cursor-pointer"
+                      onClick={() => handleEditEntry(entry)}
+                    >
                       <TableCell>
                         <div className="flex items-center">
                           <div className={`w-8 h-8 rounded-lg flex items-center justify-center mr-3 ${getComponentColor(entry.componentType)}`}>
@@ -198,6 +215,12 @@ export default function EmissionsTable() {
           </>
         )}
       </CardContent>
+
+      <EditEntryModal
+        entry={selectedEntry}
+        isOpen={isEditModalOpen}
+        onClose={handleCloseEditModal}
+      />
     </Card>
   );
 }

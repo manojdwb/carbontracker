@@ -53,18 +53,7 @@ export default function Sidebar() {
         </ul>
       </nav>
 
-      {/* Footer */}
-      <div className="p-4 border-t border-sidebar-border">
-        <div className="flex items-center space-x-3">
-          <div className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center">
-            <i className="fas fa-user text-sm"></i>
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium">Harsh Yadav</p>
-            <p className="text-xs text-gray-400">Senior Manager, Sustainability</p>
-          </div>
-        </div>
-      </div>
+      {/* Footer - Removed user info section */}
     </div>
   );
 }
