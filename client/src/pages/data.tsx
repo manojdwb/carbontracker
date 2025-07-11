@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Download } from "lucide-react";
+import EditEntryModal from "@/components/data/edit-entry-modal";
 
 export default function Data() {
   const [activeMainTab, setActiveMainTab] = useState("data");
@@ -19,6 +20,8 @@ export default function Data() {
   const [showApprovalDialog, setShowApprovalDialog] = useState(false);
   const [selectedEntry, setSelectedEntry] = useState<any>(null);
   const [showFilterDialog, setShowFilterDialog] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editingEntry, setEditingEntry] = useState<any>(null);
   const [filters, setFilters] = useState({
     component: "",
     plantName: "",
@@ -79,6 +82,42 @@ export default function Data() {
   const handleRedItemClick = (entry: any) => {
     setSelectedEntry(entry);
     setShowApprovalDialog(true);
+  };
+
+  const handleEditClick = (entry: any) => {
+    // Convert plant table data to emission entry format
+    const emissionEntry = {
+      id: entry.no,
+      businessCenter: entry.business,
+      operationSite: entry.operation,
+      plantName: entry.plant,
+      componentType: entry.component.toLowerCase().replace(' ', '-'),
+      emissionScope: entry.component === "Coal" ? "scope-1" : 
+                    entry.component === "Electricity" ? "scope-2" : "scope-3",
+      quantity: 10,
+      unit: "Metric Ton",
+      emissionFactor: 94.6,
+      emissionFactorUnit: "tCO2/GJ",
+      calorificValue: 28.2,
+      calorificValueUnit: "GJ/tonnes",
+      density: 0,
+      densityUnit: "kilogram/litre",
+      cost: 68900,
+      vendorName: "Acme Labs",
+      date: "2025-10-06",
+      startDate: "2025-09-01",
+      endDate: "2025-09-30",
+      notes: "Operating Fuel for boilers inside the plant.",
+      co2Emissions: 22.7
+    };
+    
+    setEditingEntry(emissionEntry);
+    setShowEditModal(true);
+  };
+
+  const handleCloseEditModal = () => {
+    setShowEditModal(false);
+    setEditingEntry(null);
   };
 
   const handleDownloadCompany = () => {
@@ -315,7 +354,7 @@ export default function Data() {
                               <button
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  handleRedItemClick(row);
+                                  handleEditClick(row);
                                 }}
                                 className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
                                 title="Edit entry"
@@ -665,6 +704,13 @@ export default function Data() {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Edit Entry Modal */}
+      <EditEntryModal 
+        entry={editingEntry}
+        isOpen={showEditModal}
+        onClose={handleCloseEditModal}
+      />
     </MainLayout>
   );
 }
